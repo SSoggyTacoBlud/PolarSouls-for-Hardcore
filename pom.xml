@@ -6,17 +6,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mario</groupId>
-    <artifactId>HardcoreLimbo</artifactId>
+    <artifactId>PolarSouls</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>HardcoreLimbo</name>
-    <description>Custom Hardcore Limbo system for Velocity proxy network with revival mechanics</description>
+    <name>PolarSouls</name>
+    <description>Hardcore lives system for Velocity proxy network with Limbo exile and revival mechanics</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
     <repositories>
@@ -69,8 +68,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <release>21</release>
                 </configuration>
             </plugin>
 
@@ -87,15 +85,17 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <minimizeJar>true</minimizeJar>
                             <relocations>
                                 <!-- Relocate to avoid conflicts with other plugins -->
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>com.mario.hardcorelimbo.libs.hikari</shadedPattern>
+                                    <shadedPattern>com.mario.polarsouls.libs.hikari</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.mysql</pattern>
-                                    <shadedPattern>com.mario.hardcorelimbo.libs.mysql</shadedPattern>
+                                    <shadedPattern>com.mario.polarsouls.libs.mysql</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

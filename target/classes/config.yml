@@ -1,56 +1,37 @@
-# ============================================================
-# HardcoreLimbo Configuration
-# ============================================================
-# This plugin runs on BOTH servers (Main + Limbo).
-# Set 'is-limbo-server' accordingly on each server.
-# ============================================================
+# PolarSouls config
 
-# -----------------------------------------------------------
-# Server Identity
-# -----------------------------------------------------------
-# Set to TRUE on the Limbo server, FALSE on the Main server.
+# --- Server Identity ---
+# Set to true on the Limbo server, false on Main.
 is-limbo-server: false
 
 # Server names as registered in Velocity's velocity.toml
 main-server-name: "main"
 limbo-server-name: "limbo"
 
-# -----------------------------------------------------------
-# MySQL Database
-# -----------------------------------------------------------
-# Must be identical on BOTH servers (shared database).
+# --- MySQL Database ---
 database:
   host: "localhost"
   port: 3306
   name: "minecraft"
   username: "minecraft"
   password: "changeme"
-  # Max connections in the pool (5 is plenty for this workload)
   pool-size: 5
-  # Table name for player data
   table-name: "hardcore_players"
 
-# -----------------------------------------------------------
-# Lives System
-# -----------------------------------------------------------
+# --- Lives ---
 lives:
-  # How many lives new players start with
   default: 2
-  # Grace period (hours) - new players are immune to life loss
-  grace-period-hours: 24
-  # How many lives are restored on revive
+  # Grace period (hours) for new players (0 = disabled)
+  grace-period-hours: 0
   on-revive: 1
-  # Maximum lives a player can have (-1 = unlimited)
+  # -1 = unlimited
   max-lives: 5
+  revive-cooldown-seconds: 30
 
-# -----------------------------------------------------------
-# Limbo Server Settings
-# -----------------------------------------------------------
-# Only relevant when is-limbo-server: true
+# --- Limbo Server ---
 limbo:
-  # How often (seconds) to poll DB for revived players
   check-interval-seconds: 3
-  # Spawn location (set in-game with /setlimbospawn)
+  # Set in-game with /setlimbospawn
   spawn:
     world: "world"
     x: 0.5
@@ -59,56 +40,89 @@ limbo:
     yaw: 0.0
     pitch: 0.0
 
-# -----------------------------------------------------------
-# Main Server Settings
-# -----------------------------------------------------------
-# Only relevant when is-limbo-server: false
+# --- Main Server ---
 main:
-  # Delay (ticks) before sending dead player to Limbo
-  # 20 ticks = 1 second. Gives time for death message/animation.
+  # Ticks before sending dead player to Limbo (20 ticks = 1 second)
   send-to-limbo-delay-ticks: 60
-  # Set dead players to spectator briefly before transfer
-  # This prevents the "You Died" screen from locking the client
+  # Prevents the "You Died" screen from locking the client
   spectator-on-death: true
-  # Detect Hardcore Revive Mode ritual (gamemode change detection)
   # Enable if you have HRM installed on Main
   detect-hrm-revive: true
+  # hybrid = spectator window then Limbo, spectator = stay on Main, limbo = immediate transfer
+  death-mode: "hybrid"
+  # Hybrid mode: seconds before spectator is sent to Limbo
+  hybrid-timeout-seconds: 300
 
-# -----------------------------------------------------------
-# Messages (supports & color codes and %placeholder%)
-# -----------------------------------------------------------
+# --- HRM Features ---
+hrm:
+  enabled: true
+  drop-heads: true
+  death-location-message: true
+  # 4 soul sand corners, 4 stairs edges, 1 ore center, fence, 4 wither roses, player head on top
+  structure-revive: true
+  # Keep the bottom layer after a revival
+  leave-structure-base: true
+  head-wearing-effects: true
+  # Crafting recipe: 4 Obsidian, 2 Ghast Tears, 2 Totems, 1 Skull
+  revive-skull-recipe: true
+
+# --- Extra Life Item ---
+extra-life:
+  enabled: true
+  item-material: "NETHER_STAR"
+  # 3-character rows, letters map to ingredients below
+  recipe:
+    row1: "GEG"
+    row2: "ENE"
+    row3: "GEG"
+    ingredients:
+      G: "GOLD_BLOCK"
+      E: "EMERALD"
+      N: "NETHER_STAR"
+
+# --- Messages ---
 messages:
-  # Prefix for all plugin messages
   prefix: "&8[&4☠&8] &r"
 
-  # Death messages
   death-life-lost: "&cYou lost a life! &7Remaining: &e%lives%"
   death-last-life: "&c&l⚠ FINAL WARNING! &cYou are on your last life. Be careful!"
   death-sent-to-limbo: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Entering Limbo..."
+  death-now-spectator: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. You are now a spectator.\n&7Wait for teammates to revive you."
+  death-hybrid-warning: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Spectating for &e%timeout%&c.\n&7Your team must revive you before Limbo!"
   death-grace-period: "&aGrace period active! &7No life lost. &e%time_remaining% &7remaining."
 
-  # Limbo messages
-  limbo-welcome: "&4&l═══════════════════\n&c&l    ☠ L I M B O ☠\n&4&l═══════════════════\n&7You are dead. Wait for\n&7teammates to revive you.\n&4&l═══════════════════"
+  limbo-welcome: "&4&l═══════════════════\n&c&l    ☠ L I M B O ☠\n&4&l═══════════════════\n&7You are dead. Your teammates can\n&7revive you using the &erevival ritual&7,\n&7the &eRevive Skull&7, or &e/revive&7.\n&7You will be sent back automatically.\n&4&l═══════════════════"
   limbo-cannot-leave: "&cYou are trapped in Limbo. Only revival can free you."
+  limbo-visitor-welcome: "&7Welcome to &4Limbo&7! Use &e/leavelimbo &7or &e/hub &7to return to Main."
+  limbo-visit-going: "&7Traveling to &4Limbo&7..."
+  limbo-visit-leaving: "&7Returning to the main world..."
+  limbo-visit-already-dead: "&cYou are already dead! You'll be sent to Limbo automatically."
 
-  # Revive messages
   revive-success: "&a&l✦ REVIVED! &aReturning to the world of the living..."
   revive-admin-success: "&a%player% &7has been revived. &aLives: %lives%"
+  revive-from-limbo: "&a%player% &7has been revived and will return from Limbo shortly."
   revive-not-dead: "&c%player% is not dead."
   revive-player-not-found: "&cPlayer '%player%' not found in the database."
 
-  # Status messages
   status-alive: "&a%player% &7- Lives: &e%lives% &7- Status: &aAlive"
   status-dead: "&c%player% &7- Lives: &c0 &7- Status: &4Dead (Limbo)"
   status-grace: "&a%player% &7- Lives: &e%lives% &7- &bGrace period: %time_remaining%"
 
-  # Admin messages
   limbo-spawn-set: "&aLimbo spawn set to your current location."
   lives-set: "&aSet &e%player%&a's lives to &e%lives%&a."
+  admin-lives-updated: "&a%action% lives for &e%player%&a. Now: &e%lives%"
+  admin-grace-set: "&aGrace period set for &e%player%&a (%hours%h from now)."
+  admin-grace-removed: "&aGrace period removed for &e%player%&a."
+  admin-killed: "&c%player% &7has been force-killed."
+  admin-reset: "&a%player% &7reset to defaults (&e%lives% lives&7)."
+  revive-admin-success: "&a%player% &7has been revived. &aLives: %lives%"
   reload-success: "&aConfiguration reloaded."
 
-# -----------------------------------------------------------
-# Debug
-# -----------------------------------------------------------
-# Enables verbose logging to console (for troubleshooting)
+  extra-life-used: "&a&l✦ +1 LIFE! &aYou now have &e%lives% &alives."
+  extra-life-max: "&cYou already have the maximum number of lives (%max%)."
+  extra-life-dead: "&cYou can't use this while dead."
+
+  death-cooldown: "&aRevive protection active! &7No life lost."
+
+# --- Debug ---
 debug: false
