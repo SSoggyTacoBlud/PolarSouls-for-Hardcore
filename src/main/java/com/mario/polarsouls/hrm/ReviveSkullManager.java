@@ -1,6 +1,7 @@
 package com.mario.polarsouls.hrm;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,7 +41,9 @@ public class ReviveSkullManager implements Listener {
 
     public ReviveSkullManager(PolarSouls plugin) {
         this.plugin = plugin;
-        this.reviveSkullKey = new NamespacedKey(plugin, "revive_skull");
+        // Use a stable namespace based on the plugin name to avoid legacy recipe keys
+        String ns = plugin.getName() != null ? plugin.getName().toLowerCase(Locale.ROOT) : "polarsouls";
+        this.reviveSkullKey = new NamespacedKey(ns, "revive_skull");
     }
 
     public void registerRecipe() {
@@ -54,6 +57,12 @@ public class ReviveSkullManager implements Listener {
                 Material.SKELETON_SKULL, Material.WITHER_SKELETON_SKULL,
                 Material.ZOMBIE_HEAD, Material.CREEPER_HEAD,
                 Material.PIGLIN_HEAD, Material.DRAGON_HEAD, Material.PLAYER_HEAD));
+
+        // In case an old recipe from a previous plugin name exists, remove it first.
+        try {
+            NamespacedKey oldKey = new NamespacedKey("hardcorelimbo", "revive_skull");
+            Bukkit.removeRecipe(oldKey);
+        } catch (Exception ignored) {}
 
         Bukkit.addRecipe(recipe);
         plugin.debug("Registered Revive Skull crafting recipe.");
