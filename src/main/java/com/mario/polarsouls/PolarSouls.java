@@ -292,7 +292,7 @@ public final class PolarSouls extends JavaPlugin {
             if (millis >= 0) {
                 return millis;
             }
-            getLogger().warning("Invalid grace-period format: " + gracePeriodStr + ". Using default.");
+            getLogger().warning("Invalid grace-period format: " + gracePeriodStr + ". Using default of 24h.");
         }
 
         // Fall back to old format (hours as integer) for backward compatibility

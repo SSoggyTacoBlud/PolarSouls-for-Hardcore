@@ -61,12 +61,14 @@ public final class TimeUtil {
 
     /**
      * Format milliseconds into a human-readable time string.
+     * Note: Seconds are only shown if hours is 0, to keep common durations concise.
      *
      * @param millis The time in milliseconds
-     * @return A formatted string like "2h 30m" or "45m" or "30s"
+     * @return A formatted string like "2h 30m" or "45m" or "30s", or "0s" for non-positive values
      */
     public static String formatTime(long millis) {
-        if (millis <= 0) return "0s";
+        if (millis < 0) return "0s";  // Treat negative as 0
+        if (millis == 0) return "0s";
 
         long hours = millis / 3600_000L;
         long minutes = (millis % 3600_000L) / 60_000L;
@@ -80,7 +82,7 @@ public final class TimeUtil {
             if (!sb.isEmpty()) sb.append(" ");
             sb.append(minutes).append("m");
         }
-        if (seconds > 0 && hours == 0) {  // Only show seconds if no hours
+        if (seconds > 0 && hours == 0) {  // Only show seconds if no hours, to keep display concise
             if (!sb.isEmpty()) sb.append(" ");
             sb.append(seconds).append("s");
         }
