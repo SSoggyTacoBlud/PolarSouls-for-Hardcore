@@ -71,7 +71,7 @@ public class HeadDropListener implements Listener {
                             + deathLoc.getBlockX() + ", " + deathLoc.getBlockY()
                             + ", " + deathLoc.getBlockZ());
                 });
-            }, 10L); // 0.5s delay beacause idfk it feels good
+            }, 10L); // 0.5s delay because idfk it feels good
         }
     }
 
