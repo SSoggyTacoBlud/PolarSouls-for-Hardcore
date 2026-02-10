@@ -30,9 +30,9 @@ limbo-server-name: "limbo"
 # The plugin uses MySQL to track player death states across servers.
 # This allows dead players to stay dead even after server restart!
 #
-# ⚠️ IMPORTANT: Both Main and Limbo servers MUST use the SAME database!
+# IMPORTANT: Both Main and Limbo servers MUST use the SAME database!
 #
-# 📌 If you use Pterodactyl panel:
+# If you use Pterodactyl panel:
 #    - Go to your server settings
 #    - Click "Databases" tab
 #    - Create a new database if you don't have one
@@ -64,7 +64,7 @@ database:
   # Increase if you have 100+ players
   pool-size: 5
   
-  # Table name where player data is stored (don't change unless necessary)
+  # Table name where player data is stored (don't change unless necessary and you know what you're doing)
   table-name: "hardcore_players"
 
 # ───────────────────────────────────────────────────────────────────────────────

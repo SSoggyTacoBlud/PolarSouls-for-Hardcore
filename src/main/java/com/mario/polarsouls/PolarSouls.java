@@ -470,7 +470,7 @@ public final class PolarSouls extends JavaPlugin {
         if (storedVersion == null) {
             // First time setup - store this version
             databaseManager.savePluginVersion(currentVersion);
-            getLogger().info("Plugin version " + currentVersion + " registered in database.");
+            getLogger().log(Level.INFO, "Plugin version {0} registered in database.", currentVersion);
             return;
         }
 
@@ -478,8 +478,8 @@ public final class PolarSouls extends JavaPlugin {
             getLogger().warning("╔════════════════════════════════════════╗");
             getLogger().warning("║  ⚠️  VERSION MISMATCH DETECTED!       ║");
             getLogger().warning("╠════════════════════════════════════════╣");
-            getLogger().warning("║ Current: &r 1.0.0v" + currentVersion);
-            getLogger().warning("║ Database: " + storedVersion);
+            getLogger().log(Level.WARNING, "║ Current: {0}", currentVersion);
+            getLogger().log(Level.WARNING, "║ Database: {0}", storedVersion);
             getLogger().warning("║                                        ║");
             getLogger().warning("║ ENSURE both Main and Limbo servers    ║");
             getLogger().warning("║ run the SAME plugin version!          ║");
