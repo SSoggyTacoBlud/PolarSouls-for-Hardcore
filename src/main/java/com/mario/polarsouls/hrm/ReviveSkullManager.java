@@ -56,7 +56,7 @@ public class ReviveSkullManager implements Listener {
                 Material.ZOMBIE_HEAD, Material.CREEPER_HEAD,
                 Material.PIGLIN_HEAD, Material.DRAGON_HEAD, Material.PLAYER_HEAD));
 
-        // In case an old recipe from a previous plugin name exists, remove it first.
+        // in case old recipe from a previous plugin exists, remove it
         try {
             NamespacedKey oldKey = new NamespacedKey("hardcorelimbo", "revive_skull");
             Bukkit.removeRecipe(oldKey);
