@@ -40,7 +40,7 @@ public class ReviveSkullManager implements Listener {
     public ReviveSkullManager(PolarSouls plugin) {
         this.plugin = plugin;
         // use a stable namespace based on the plugin name to avoid legacy recipe keys because I feel like it
-        String ns = plugin.getName() != null ? plugin.getName().toLowerCase(Locale.ROOT) : "polarsouls";
+        String ns = plugin.getName().toLowerCase(Locale.ROOT);
         this.reviveSkullKey = new NamespacedKey(ns, "revive_skull");
     }
 
@@ -60,7 +60,9 @@ public class ReviveSkullManager implements Listener {
         try {
             NamespacedKey oldKey = new NamespacedKey("hardcorelimbo", "revive_skull");
             Bukkit.removeRecipe(oldKey);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            // legacy recipe may not exist so ignore any exception
+        }
 
         Bukkit.addRecipe(recipe);
         plugin.debug("Registered Revive Skull crafting recipe.");

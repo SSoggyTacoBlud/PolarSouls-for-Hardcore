@@ -64,32 +64,18 @@ public class MainServerListener implements Listener {
             return;
         }
 
-        boolean shouldSave = false;
+        UUID uuid = player.getUniqueId();
         long now = System.currentTimeMillis();
+        boolean shouldSave = false;
 
-        Long adjustedFirstJoin = null;
-        if (data.getLastSeen() > 0) {
-            if (plugin.getGracePeriodMillis() > 0
-                    && data.getFirstJoin() > 0
-                    && data.getLastSeen() >= data.getFirstJoin()) {
-                long offlineDuration = now - data.getLastSeen();
-                if (offlineDuration > 0) {
-                    adjustedFirstJoin = data.getFirstJoin() + offlineDuration;
-                    data.setFirstJoin(adjustedFirstJoin);
-                    shouldSave = true;
-                }
-            }
-            data.setLastSeen(0L);
-            shouldSave = true;
-        }
-
-        if (!data.getUsername().equals(player.getName())) {
-            data.setUsername(player.getName());
-            shouldSave = true;
-        }
-
+        Long adjustedFirstJoin = adjustGracePeriodIfNeeded(data, now);
         if (adjustedFirstJoin != null) {
-            db.setFirstJoin(player.getUniqueId(), adjustedFirstJoin);
+            shouldSave = true;
+            db.setFirstJoin(uuid, adjustedFirstJoin);
+        }
+
+        if (updateUsernameIfChanged(data, player)) {
+            shouldSave = true;
         }
 
         if (shouldSave) {
@@ -99,20 +85,51 @@ public class MainServerListener implements Listener {
         if (data.isDead()) {
             redirectToLimbo(player);
         } else {
-            // gamemode check must happen on the main thread
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                if (!player.isOnline()) return;
-                if (player.getGameMode() != GameMode.SURVIVAL) {
-                    plugin.debug(player.getName() + " returned alive, restoring to survival.");
-                    UUID uuid = player.getUniqueId();
-                    grantReviveCooldown(uuid);
-                    hybridWindowUsed.remove(uuid);
-                    expectedGamemodeChanges.add(uuid);
-                    player.setGameMode(GameMode.SURVIVAL);
-                    player.sendMessage(MessageUtil.get("revive-success"));
-                }
-            });
+            restoreAlivePlayer(player, uuid);
         }
+    }
+
+    private Long adjustGracePeriodIfNeeded(PlayerData data, long now) {
+        if (data.getLastSeen() <= 0) {
+            return null;
+        }
+
+        if (plugin.getGracePeriodMillis() > 0
+                && data.getFirstJoin() > 0
+                && data.getLastSeen() >= data.getFirstJoin()) {
+            long offlineDuration = now - data.getLastSeen();
+            if (offlineDuration > 0) {
+                Long adjustedFirstJoin = data.getFirstJoin() + offlineDuration;
+                data.setFirstJoin(adjustedFirstJoin);
+                return adjustedFirstJoin;
+            }
+        }
+
+        data.setLastSeen(0L);
+        return null;
+    }
+
+    private boolean updateUsernameIfChanged(PlayerData data, Player player) {
+        if (!data.getUsername().equals(player.getName())) {
+            data.setUsername(player.getName());
+            return true;
+        }
+        return false;
+    }
+
+    private void restoreAlivePlayer(Player player, UUID uuid) {
+        // gamemode check must happen on the main thread
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!player.isOnline()) return;
+            if (player.getGameMode() != GameMode.SURVIVAL) {
+                plugin.debug(player.getName() + " returned alive, restoring to survival.");
+                grantReviveCooldown(uuid);
+                hybridWindowUsed.remove(uuid);
+                expectedGamemodeChanges.add(uuid);
+                player.setGameMode(GameMode.SURVIVAL);
+                player.sendMessage(MessageUtil.get("revive-success"));
+            }
+        });
     }
 
     private void handleFirstJoin(Player player) {

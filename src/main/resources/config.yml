@@ -1,94 +1,306 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PolarSouls Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This plugin implements a hardcore lives system with Limbo exile and revival mechanics.
+# Read all sections carefully to configure correctly for your network.
+
+# ───────────────────────────────────────────────────────────────────────────────
+# Plugin Features & Updates
+# ───────────────────────────────────────────────────────────────────────────────
+# Check for plugin updates on startup (Modrinth)
 check-for-updates: true
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Server Role Configuration
+# ───────────────────────────────────────────────────────────────────────────────
+# Set to 'true' ONLY on your Limbo server
+# Set to 'false' on your Main server
+# Both servers must have the SAME VERSION of this plugin
 is-limbo-server: false
+
+# Name of your Main server (where players spawn/respawn)
 main-server-name: "main"
+
+# Name of your Limbo server (where dead players are exiled)
 limbo-server-name: "limbo"
 
+# ───────────────────────────────────────────────────────────────────────────────
+# MySQL Database Configuration
+# ───────────────────────────────────────────────────────────────────────────────
+# The plugin uses MySQL to track player death states across servers.
+# This allows dead players to stay dead even after server restart!
+#
+# ⚠️ IMPORTANT: Both Main and Limbo servers MUST use the SAME database!
+#
+# 📌 If you use Pterodactyl panel:
+#    - Go to your server settings
+#    - Click "Databases" tab
+#    - Create a new database if you don't have one
+#    - The connection details will be in the Databases section:
+#      Host: localhost (or your DB host)
+#      Port: 3306 (default MySQL port)
+#      Username: your_db_username
+#      Password: your_db_password
+#      Database: your_db_name
+#
 database:
+  # MySQL server address (usually localhost for Pterodactyl)
   host: "localhost"
+  
+  # MySQL port (default 3306 - don't change unless you know why)
   port: 3306
+  
+  # Database name to use (create this in MySQL first if it doesn't exist)
   name: "minecraft"
+  
+  # MySQL username (Pterodactyl: check Databases tab)
   username: "minecraft"
+  
+  # MySQL password (Pterodactyl: check Databases tab) - CHANGE THIS!
   password: "changeme"
+  
+  # Connection pool size (number of simultaneous DB connections)
+  # Default 5 is fine for most servers
+  # Increase if you have 100+ players
   pool-size: 5
+  
+  # Table name where player data is stored (don't change unless necessary)
   table-name: "hardcore_players"
 
-# Grace period: Time before a new player starts losing lives on death
-# Supports flexible time formats: "2h" (2 hours), "1h30m" (1.5 hours), "90m" (90 minutes)
-# Also accepts plain numbers for backward compatibility (interpreted as hours)
-# Examples: "24h", "1h30m", "2h30m", "90m", "0" (disabled)
+# ───────────────────────────────────────────────────────────────────────────────
+# Lives & Grace Period Settings
+# ───────────────────────────────────────────────────────────────────────────────
 lives:
+  # Default number of lives for new players
+  # Example: 2 = players get 2 lives before going to Limbo
   default: 2
+  
+  # Grace period: New players are protected for this duration
+  # They won't lose lives if they die during grace period
+  # Counts ONLY when the player is online
+  # 
+  # Format options:
+  #   "24h"    = 24 hours
+  #   "2h30m"  = 2 hours 30 minutes
+  #   "90m"    = 90 minutes
+  #   "0"      = Disabled (no grace period)
+  #
+  # Recommended: "24h" (give new players 1 full day to learn the server)
   grace-period: "0"
+  
+  # Number of lives restored when a player is revived
+  # Usually 1 (player comes back with 1 life)
   on-revive: 1
+  
+  # Maximum lives a player can have
+  # Players can't exceed this even with extra-life items
   max-lives: 5
+  
+  # Cooldown after revive to prevent accidental death damage
+  # Time in seconds during which death events are ignored
+  # Recommended: 30 (gives 30 seconds of protection after revival)
   revive-cooldown-seconds: 30
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Limbo Server Settings
+# ───────────────────────────────────────────────────────────────────────────────
 limbo:
+  # How often to check if dead players should be transferred back to Main
+  # Lower = more frequent checks (uses more CPU)
+  # Higher = less frequent checks (delays revival detection)
+  # Recommended: 3-5 seconds
   check-interval-seconds: 3
+  
+  # Spawn location for dead players in Limbo
   spawn:
+    # World name in Limbo server
     world: "world"
+    
+    # X, Y, Z coordinates where dead players spawn
     x: 0.5
     y: 65.0
     z: 0.5
+    
+    # Yaw (rotation left/right, 0-360, 0=North, 90=East, 180=South, 270=West)
     yaw: 0.0
+    
+    # Pitch (rotation up/down, -90=up, 0=level, 90=down)
     pitch: 0.0
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Main Server Settings
+# ───────────────────────────────────────────────────────────────────────────────
 main:
+  # Delay (in ticks) before dead player is sent to Limbo
+  # 20 ticks = 1 second
+  # Recommended: 20 (give the server 1 second to finish death processing)
   send-to-limbo-delay-ticks: 20
+  
+  # Whether to put dead players in SPECTATOR mode
+  # Use with LIMBO mode: true = player becomes spectator, then transported to Limbo
+  # Use with SPECTATOR/HYBRID modes: automatically managed
   spectator-on-death: false
+  
+  # Detect revivals from Hardcore Revive Mode (HRM) structures
+  # If true: players revived via HRM are detected automatically and saved to DB
+  # If false: only /revive command and direct database changes count as revival
+  # Recommended: true
   detect-hrm-revive: true
+  
+  # Death mode - how players are handled when they lose all lives
+  # Options:
+  #   "limbo"     = Immediately send to Limbo server
+  #   "spectator" = Keep on Main server in SPECTATOR mode until revived
+  #   "hybrid"    = Spectator for a time window, then auto-transfer to Limbo
+  #
+  # Recommended: "hybrid" (gives players time to be rescued, then Limbo if not)
   death-mode: "hybrid"
+  
+  # For "hybrid" mode: timeout in seconds before auto-transfer to Limbo
+  # After losing all lives, player has this long to be revived while in spectator mode
+  # After timeout expires, they're auto-sent to Limbo
+  # 300 seconds = 5 minutes
+  # Recommended: 300-600 (5-10 minutes)
   hybrid-timeout-seconds: 300
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Hardcore Revive Mode (HRM) Settings
+# These control the revival structures and items for reviving dead players
+# ───────────────────────────────────────────────────────────────────────────────
 hrm:
+  # Enable HRM features (revival structures, revive skull, head dropping, etc)
+  # Set to false to disable all HRM features
   enabled: true
+  
+  # Drop player heads on death (to be used in revival structures)
+  # Requires "enabled: true"
   drop-heads: true
+  
+  # Send death location message when player dies
+  # Helps teammates find the revival structure location
   death-location-message: true
+  
+  # Enable revival structures (3x3x3 beacon structures to revive players)
+  # See README.md for structure building instructions
   structure-revive: true
+  
+  # Leave the base of the structure intact after revival
+  # If false: beacon and base are destroyed after successful revive
+  # If true: structure remains (you can reuse it)
   leave-structure-base: true
+  
+  # Visual effects when wearing a player head
+  # Gives the wearer speed and night vision bonuses
   head-wearing-effects: true
+  
+  # Enable crafting recipe for Revive Skull
+  # Revive Skull = craftable item to select dead player heads for revival
+  # Recipe: G E G / E N E / G E G
+  #   G = Gold Block, E = Emerald, N = Nether Star
   revive-skull-recipe: true
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Extra Life Item Settings
+# Players can craft/find items that grant them an extra life when used
+# ───────────────────────────────────────────────────────────────────────────────
 extra-life:
+  # Enable extra life items
   enabled: true
+  
+  # Item used to represent an extra life (must be a valid Minecraft material)
+  # Other options: "NETHER_STAR" (original), "GOLDEN_APPLE", "AMETHYST_CLUSTER"
   item-material: "NETHER_STAR"
+  
+  # Crafting recipe for extra life item
+  # Pattern: 3x3 grid (row1, row2, row3)
+  # Special symbol "N" = ingredient at center, "G"/"E" = other ingredients
   recipe:
-    row1: "GEG"
-    row2: "ENE"
-    row3: "GEG"
+    row1: "GEG"      # Gold, Emerald, Gold
+    row2: "ENE"      # Emerald, Nether Star, Emerald
+    row3: "GEG"      # Gold, Emerald, Gold
+    
     ingredients:
-      G: "GOLD_BLOCK"
-      E: "EMERALD"
-      N: "NETHER_STAR"
+      G: "GOLD_BLOCK"      # Gold blocks
+      E: "EMERALD"         # Emerald gems
+      N: "NETHER_STAR"     # Nether star (center)
 
+# ───────────────────────────────────────────────────────────────────────────────
+# Chat Message Configuration
+# All messages support Bukkit color codes: &0-&f for colors, &l for bold, etc.
+# Use \n for line breaks
+# ───────────────────────────────────────────────────────────────────────────────
 messages:
+  # Prefix added to all plugin messages
   prefix: "&8[&4☠&8] &r"
 
+  # --- Death Messages ---
+  # Sent when player loses a life but still has lives remaining
   death-life-lost: "&cYou lost a life! &7Remaining: &e%lives%"
+  
+  # Sent when player loses their final life (warning!)
   death-last-life: "&c&l⚠ FINAL WARNING! &cYou are on your last life. Be careful!"
+  
+  # Sent in LIMBO mode when all lives lost - player goes to Limbo immediately
   death-sent-to-limbo: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Entering Limbo..."
+  
+  # Sent in SPECTATOR mode when all lives lost - player stays as spectator
   death-now-spectator: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. You are now a spectator.\n&7Wait for teammates to revive you."
+  
+  # Sent in HYBRID mode - player has limited time before Limbo
   death-hybrid-warning: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Spectating for &e%timeout%&c.\n&7Your team must revive you before Limbo!"
+  
+  # Sent when player dies during grace period (protected from death)
   death-grace-period: "&aGrace period active! &7No life lost. &e%time_remaining% &7remaining."
+  
+  # Cooldown message (revive protection active)
+  death-cooldown: "&aRevive protection active! &7No life lost."
 
+  # --- Limbo Messages ---
+  # Welcome message shown when player enters Limbo
   limbo-welcome: "&4&l═══════════════════\n&c&l    ☠ L I M B O ☠\n&4&l═══════════════════\n&7You are dead. Your teammates can\n&7revive you using the &erevival ritual&7,\n&7an admin with &e/psadmin revive <player>&7, or &e/revive&7.\n&7You will be sent back automatically.\n&4&l═══════════════════"
+  
+  # Message sent to dead player trying to leave Limbo
   limbo-cannot-leave: "&cYou are trapped in Limbo. Only revival can free you."
+  
+  # Welcome message for alive visitors to Limbo
   limbo-visitor-welcome: "&7Welcome to &4Limbo&7! Use &e/leavelimbo &7or &e/hub &7to return to Main."
+  
+  # Traveling message when using /limbo command
   limbo-visit-going: "&7Traveling to &4Limbo&7..."
+  
+  # Message when leaving Limbo
   limbo-visit-leaving: "&7Returning to the main world..."
+  
+  # Message when trying to visit Limbo but already dead
   limbo-visit-already-dead: "&cYou are already dead! You'll be sent to Limbo automatically."
 
+  # --- Revival Messages ---
+  # Sent to revived player (returned to Main)
   revive-success: "&a&l✦ REVIVED! &aReturning to the world of the living..."
+  
+  # Sent to admins when they use /psadmin revive <player>
   revive-admin-success: "&a%player% &7has been revived. &aLives: %lives%"
+  
+  # Sent to admins when reviving player from Limbo
   revive-from-limbo: "&a%player% &7has been revived and will return from Limbo shortly."
+  
+  # Sent when trying to revive an alive player
   revive-not-dead: "&c%player% is not dead."
+  
+  # Sent when player not found in database
   revive-player-not-found: "&cPlayer '%player%' not found in the database."
 
+  # --- Status Messages ---
+  # Status command output for alive player
   status-alive: "&a%player% &7- Lives: &e%lives% &7- Status: &aAlive"
+  
+  # Status command output for dead player
   status-dead: "&c%player% &7- Lives: &c0 &7- Status: &4Dead (Limbo)"
+  
+  # Status command output for player with grace period
   status-grace: "&a%player% &7- Lives: &e%lives% &7- &bGrace period: %time_remaining%"
 
+  # --- Admin Command Messages ---
   limbo-spawn-set: "&aLimbo spawn set to your current location."
   lives-set: "&aSet &e%player%&a's lives to &e%lives%&a."
   admin-lives-updated: "&a%action% lives for &e%player%&a. Now: &e%lives%"
@@ -96,14 +308,17 @@ messages:
   admin-grace-removed: "&aGrace period removed for &e%player%&a."
   admin-killed: "&c%player% &7has been force-killed."
   admin-reset: "&a%player% &7reset to defaults (&e%lives% lives&7)."
-  revive-admin-success: "&a%player% &7has been revived. &aLives: %lives%"
   reload-success: "&aConfiguration reloaded."
 
+  # --- Extra Life Messages ---
   extra-life-used: "&a&l✦ +1 LIFE! &aYou now have &e%lives% &alives."
   extra-life-max: "&cYou already have the maximum number of lives (%max%)."
   extra-life-dead: "&cYou can't use this while dead."
 
-  death-cooldown: "&aRevive protection active! &7No life lost."
-
-# --- Debug ---
+# ───────────────────────────────────────────────────────────────────────────────
+# Debug & Development
+# ───────────────────────────────────────────────────────────────────────────────
+# Enable debug logging to console
+# Shows detailed information about player events, DB queries, etc.
+# Only enable for troubleshooting - disables for production!
 debug: false

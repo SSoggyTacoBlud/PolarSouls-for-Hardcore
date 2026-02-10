@@ -100,6 +100,9 @@ public final class PolarSouls extends JavaPlugin {
             return;
         }
 
+        // Check version compatibility between Main and Limbo servers
+        checkVersionCompatibility();
+
         registerCommands();
 
         if (isLimboServer) {
@@ -293,7 +296,7 @@ public final class PolarSouls extends JavaPlugin {
             if (millis >= 0) {
                 return millis;
             }
-            getLogger().warning("Invalid grace-period format: " + gracePeriodStr + ". Using default of 24h.");
+            getLogger().log(Level.WARNING, "Invalid grace-period format: {0}. Using default of 24h.", gracePeriodStr);
         }
 
         // Fall back to old format (hours as integer) for backward compatibility
@@ -455,4 +458,38 @@ public final class PolarSouls extends JavaPlugin {
     public boolean isHrmReviveSkullRecipe() {
         return hrmEnabled && hrmReviveSkullRecipe;
     }
+
+    /**
+     * Check version compatibility between Main and Limbo servers.
+     * Warns if they're running different versions.
+     */
+    private void checkVersionCompatibility() {
+        String currentVersion = getDescription().getVersion();
+        String storedVersion = databaseManager.getPluginVersion();
+
+        if (storedVersion == null) {
+            // First time setup - store this version
+            databaseManager.savePluginVersion(currentVersion);
+            getLogger().info("Plugin version " + currentVersion + " registered in database.");
+            return;
+        }
+
+        if (!currentVersion.equals(storedVersion)) {
+            getLogger().warning("╔════════════════════════════════════════╗");
+            getLogger().warning("║  ⚠️  VERSION MISMATCH DETECTED!       ║");
+            getLogger().warning("╠════════════════════════════════════════╣");
+            getLogger().warning("║ Current: &r 1.0.0v" + currentVersion);
+            getLogger().warning("║ Database: " + storedVersion);
+            getLogger().warning("║                                        ║");
+            getLogger().warning("║ ENSURE both Main and Limbo servers    ║");
+            getLogger().warning("║ run the SAME plugin version!          ║");
+            getLogger().warning("║                                        ║");
+            getLogger().warning("║ Mismatched versions may cause         ║");
+            getLogger().warning("║ data corruption or unexpected issues! ║");
+            getLogger().warning("╚════════════════════════════════════════╝");
+        } else {
+            debug("Version check passed: " + currentVersion);
+        }
+    }
 }
+
