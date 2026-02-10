@@ -67,12 +67,15 @@ public class MainServerListener implements Listener {
         boolean shouldSave = false;
         long now = System.currentTimeMillis();
 
+        Long adjustedFirstJoin = null;
         if (data.getLastSeen() > 0) {
-            if (plugin.getGracePeriodMillis() > 0 && data.getFirstJoin() > 0) {
+            if (plugin.getGracePeriodMillis() > 0
+                    && data.getFirstJoin() > 0
+                    && data.getLastSeen() >= data.getFirstJoin()) {
                 long offlineDuration = now - data.getLastSeen();
                 if (offlineDuration > 0) {
-                    long adjustedFirstJoin = data.getFirstJoin() + offlineDuration;
-                    data.setFirstJoin(Math.min(adjustedFirstJoin, now));
+                    adjustedFirstJoin = data.getFirstJoin() + offlineDuration;
+                    data.setFirstJoin(adjustedFirstJoin);
                     shouldSave = true;
                 }
             }
@@ -83,6 +86,10 @@ public class MainServerListener implements Listener {
         if (!data.getUsername().equals(player.getName())) {
             data.setUsername(player.getName());
             shouldSave = true;
+        }
+
+        if (adjustedFirstJoin != null) {
+            db.setFirstJoin(player.getUniqueId(), adjustedFirstJoin);
         }
 
         if (shouldSave) {

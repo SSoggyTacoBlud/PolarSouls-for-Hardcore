@@ -291,6 +291,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         int defaultLives = plugin.getDefaultLives();
         PlayerData fresh = PlayerData.createNew(data.getUuid(), data.getUsername(), defaultLives);
         db.savePlayer(fresh);
+        db.setFirstJoin(data.getUuid(), fresh.getFirstJoin());
         updateLastSeenForGrace(fresh);
 
         plugin.getLogger().log(Level.INFO, "{0} reset {1} to defaults ({2} lives)",
@@ -422,7 +423,9 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void updateLastSeenForGrace(PlayerData data) {
         Player target = Bukkit.getPlayer(data.getUuid());
-        if (target == null || !target.isOnline()) {
+        if (target != null && target.isOnline()) {
+            db.setLastSeen(data.getUuid(), 0L);
+        } else {
             db.setLastSeen(data.getUuid(), System.currentTimeMillis());
         }
     }

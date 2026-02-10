@@ -170,7 +170,6 @@ public class DatabaseManager {
                 + "username = VALUES(username), "
                 + "lives = VALUES(lives), "
                 + "is_dead = VALUES(is_dead), "
-                + "first_join = VALUES(first_join), "
                 + "last_death = VALUES(last_death), "
                 + "last_seen = VALUES(last_seen)";
 
