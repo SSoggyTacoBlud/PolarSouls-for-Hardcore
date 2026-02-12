@@ -67,15 +67,15 @@ public class MainServerListener implements Listener {
         boolean shouldSave = false;
         long now = System.currentTimeMillis();
 
-        Long adjustedFirstJoin = null;
         if (data.getLastSeen() > 0) {
-            if (plugin.getGracePeriodMillis() > 0
-                    && data.getFirstJoin() > 0
-                    && data.getLastSeen() >= data.getFirstJoin()) {
+            // Pause grace period while offline: extend graceUntil by offline duration
+            // Only adjust if grace hasn't already expired before the player went offline
+            if (data.getGraceUntil() > 0 && data.getGraceUntil() > data.getLastSeen()) {
                 long offlineDuration = now - data.getLastSeen();
                 if (offlineDuration > 0) {
-                    adjustedFirstJoin = data.getFirstJoin() + offlineDuration;
-                    data.setFirstJoin(adjustedFirstJoin);
+                    long adjustedGraceUntil = data.getGraceUntil() + offlineDuration;
+                    data.setGraceUntil(adjustedGraceUntil);
+                    db.setGraceUntil(player.getUniqueId(), adjustedGraceUntil);
                     shouldSave = true;
                 }
             }
@@ -86,10 +86,6 @@ public class MainServerListener implements Listener {
         if (!data.getUsername().equals(player.getName())) {
             data.setUsername(player.getName());
             shouldSave = true;
-        }
-
-        if (adjustedFirstJoin != null) {
-            db.setFirstJoin(player.getUniqueId(), adjustedFirstJoin);
         }
 
         if (shouldSave) {
@@ -117,18 +113,20 @@ public class MainServerListener implements Listener {
 
     private void handleFirstJoin(Player player) {
         PlayerData data = PlayerData.createNew(player.getUniqueId(), player.getName(),
-                plugin.getDefaultLives());
+                plugin.getDefaultLives(), plugin.getGracePeriodMillis());
         db.savePlayer(data);
         plugin.debug("Created new player record for " + player.getName());
 
-        final PlayerData finalData = data;
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            if (player.isOnline()) {
-                String timeRemaining = finalData.getGraceTimeRemaining(plugin.getGracePeriodMillis());
-                player.sendMessage(MessageUtil.get("death-grace-period",
-                        "time_remaining", timeRemaining));
-            }
-        });
+        if (data.getGraceUntil() > 0) {
+            final PlayerData finalData = data;
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (player.isOnline()) {
+                    String timeRemaining = finalData.getGraceTimeRemaining(plugin.getGracePeriodMillis());
+                    player.sendMessage(MessageUtil.get("death-grace-period",
+                            "time_remaining", timeRemaining));
+                }
+            });
+        }
     }
 
     private void redirectToLimbo(Player player) {
