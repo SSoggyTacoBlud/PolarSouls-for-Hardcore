@@ -1,12 +1,15 @@
 package com.mario.polarsouls.hrm;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -87,5 +90,23 @@ public class HeadDropListener implements Listener {
             head.setItemMeta(meta);
         }
         return head;
+    }
+
+    /**
+     * Removes all dropped player head item entities belonging to the specified player
+     * from all worlds. Must be called on the main server thread.
+     */
+    public static void removeDroppedHeads(UUID ownerUuid) {
+        for (World world : Bukkit.getWorlds()) {
+            for (Item itemEntity : world.getEntitiesByClass(Item.class)) {
+                ItemStack stack = itemEntity.getItemStack();
+                if (stack.getType() != Material.PLAYER_HEAD) continue;
+                if (!(stack.getItemMeta() instanceof SkullMeta skullMeta)) continue;
+                OfflinePlayer skullOwner = skullMeta.getOwningPlayer();
+                if (skullOwner != null && skullOwner.getUniqueId().equals(ownerUuid)) {
+                    itemEntity.remove();
+                }
+            }
+        }
     }
 }
