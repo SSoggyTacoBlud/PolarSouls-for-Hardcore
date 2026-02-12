@@ -1,5 +1,8 @@
 check-for-updates: true
 
+# Display hardcore-style hearts on the client (cosmetic only, no gameplay change)
+hardcore-hearts: true
+
 is-limbo-server: false
 main-server-name: "main"
 limbo-server-name: "limbo"
