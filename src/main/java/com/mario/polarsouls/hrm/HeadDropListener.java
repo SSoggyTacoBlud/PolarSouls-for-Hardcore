@@ -101,12 +101,8 @@ public class HeadDropListener implements Listener {
         return head;
     }
 
-    /**
-     * Removes all player head items belonging to the specified player from:
-     * dropped item entities, player inventories (including armor/offhand/ender chest),
-     * item frames, and container blocks (chests, barrels, hoppers, shulker boxes, etc.)
-     * in all loaded chunks. Must be called on the main server thread.
-     */
+    // nukes all of a player's heads from existence - everywhere
+    // (drops, inventories, item frames, containers, shulkers, ender chests, you name it)
     public static void removeDroppedHeads(UUID ownerUuid) {
         for (World world : Bukkit.getWorlds()) {
             // Remove dropped item entities
@@ -145,9 +141,6 @@ public class HeadDropListener implements Listener {
         }
     }
 
-    /**
-     * Removes owned heads from an inventory, including heads inside shulker boxes.
-     */
     private static void removeFromInventory(Inventory inv, UUID ownerUuid) {
         for (int i = 0; i < inv.getSize(); i++) {
             ItemStack item = inv.getItem(i);
@@ -161,9 +154,6 @@ public class HeadDropListener implements Listener {
         }
     }
 
-    /**
-     * Checks a shulker box item for owned heads, removing them and updating the item.
-     */
     private static void removeFromShulkerItem(Inventory inv, int slot, ItemStack item, UUID ownerUuid) {
         if (!item.hasItemMeta()) return;
         if (!(item.getItemMeta() instanceof BlockStateMeta bsm)) return;

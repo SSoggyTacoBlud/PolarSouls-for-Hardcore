@@ -54,7 +54,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     // Tracks pending grace confirmation per admin sender name
     private final Map<String, PendingGrace> pendingGraceConfirmations = new ConcurrentHashMap<>();
 
-    /** Holds context for a pending grace confirmation: target player, requested duration, and existing grace end time. */
+    // stores pending grace confirmations so we can ask before overwriting
     private record PendingGrace(UUID targetUuid, String targetName, long requestedMillis, long existingGraceUntil) {}
 
     public AdminCommand(PolarSouls plugin) {
