@@ -6,7 +6,7 @@
 
 A comprehensive hardcore lives system plugin designed for Velocity proxy networks. When players lose all their lives, they're exiled to a Limbo server until teammates revive them through various methods.
 
-> 📚 **[Read the Full Documentation →](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)** - Complete installation guides, configuration reference, troubleshooting, and more!
+> **[Read the Full Documentation →](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)** - Complete installation guides, configuration reference, troubleshooting, and more!
 
 ---
 
@@ -99,7 +99,7 @@ Wearing a dead player's head grants **Speed II** and **Night Vision** - useful f
 - **Java:** 21 or higher
 - **Servers:** Two backend servers (Main + Limbo)
 
-> ⚠️ **Important:** Do **NOT** enable `hardcore=true` in `server.properties`. Leave it as `false` - the plugin manages hardcore mechanics internally.
+> **Important:** Do **NOT** enable `hardcore=true` in `server.properties`. Leave it as `false` - the plugin manages hardcore mechanics internally.
 
 ---
 
@@ -146,7 +146,7 @@ Wearing a dead player's head grants **Speed II** and **Night Vision** - useful f
 
 **For BungeeCord/Waterfall:** Enable IP forwarding in `config.yml` and set `bungeecord: true` in `spigot.yml`
 
-> 📝 **Note:** Install PolarSouls ONLY on backend servers, NOT on the proxy!
+> **Note:** Install PolarSouls ONLY on backend servers, NOT on the proxy!
 
 ---
 
@@ -253,10 +253,10 @@ All messages are customizable with Minecraft color codes!
 - Update both simultaneously
 
 **Need more help?**
-- 📚 [Full Documentation Wiki](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)
-- 🔧 [Troubleshooting Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/troubleshooting.html)
-- ❓ [FAQ](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/faq.html)
-- 🐛 [Open an issue](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) with your version, Minecraft version, proxy type, and console errors
+- [Full Documentation Wiki](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)
+- [Troubleshooting Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/troubleshooting.html)
+- [FAQ](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/faq.html)
+- [Open an issue](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) with your version, Minecraft version, proxy type, and console errors
 
 ---
 

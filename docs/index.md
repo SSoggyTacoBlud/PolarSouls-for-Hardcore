@@ -17,21 +17,21 @@ PolarSouls features a lives-based death mechanic where players are exiled to a L
 
 ## Key Features
 
-✨ **Lives System** - Configurable starting lives (default: 2) with maximum cap (default: 5)
+**Lives System** - Configurable starting lives (default: 2) with maximum cap (default: 5)
 
-⚰️ **Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
+**Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
 
-🔮 **Multiple Revival Methods** - Ritual structures, Revive Skull item, or admin commands
+**Multiple Revival Methods** - Ritual structures, Revive Skull item, or admin commands
 
-🛡️ **Grace Period Protection** - New players get protected time to learn (counts only online time)
+**Grace Period Protection** - New players get protected time to learn (counts only online time)
 
-💎 **Extra Life Items** - Craftable items to gain additional lives (fully customizable recipe)
+**Extra Life Items** - Craftable items to gain additional lives (fully customizable recipe)
 
-🔄 **Cross-Server Architecture** - MySQL-backed persistence across Main and Limbo servers
+**Cross-Server Architecture** - MySQL-backed persistence across Main and Limbo servers
 
-🚀 **Automatic Transfer** - Dead players sent to Limbo, revived players return to Main automatically
+**Automatic Transfer** - Dead players sent to Limbo, revived players return to Main automatically
 
-👻 **Limbo Visiting** - Alive players can visit Limbo to interact with dead teammates
+**Limbo Visiting** - Alive players can visit Limbo to interact with dead teammates
 
 ## Documentation Structure
 
@@ -66,14 +66,14 @@ Frequently asked questions about PolarSouls features and functionality.
 - **Java:** 21 or higher
 - **Servers:** Two backend servers (Main + Limbo)
 
-> ⚠️ **Important:** Do **NOT** enable `hardcore=true` in `server.properties`. Leave it as `false` - the plugin manages hardcore mechanics internally.
+> **Important:** Do **NOT** enable `hardcore=true` in `server.properties`. Leave it as `false` - the plugin manages hardcore mechanics internally.
 
 ## Quick Links
 
-- 📦 [Download from Modrinth](https://modrinth.com/plugin/polarsouls)
-- 📥 [Download from GitHub Releases](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/releases)
-- 🐛 [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
-- 💬 [GitHub Discussions](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/discussions)
+- [Download from Modrinth](https://modrinth.com/plugin/polarsouls)
+- [Download from GitHub Releases](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/releases)
+- [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
+- [GitHub Discussions](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/discussions)
 
 ## Getting Started
 

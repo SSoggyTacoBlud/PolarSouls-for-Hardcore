@@ -72,10 +72,10 @@ Visit the Limbo server as a living player to interact with dead teammates. You c
 ```
 
 **Features:**
-- ✅ Alive players can visit anytime
-- ✅ Can return to Main with `/leavelimbo`
-- ❌ Dead players cannot use this command
-- ❌ Dead players cannot leave Limbo until revived
+- - Alive players can visit anytime
+- - Can return to Main with `/leavelimbo`
+- - Dead players cannot use this command
+- - Dead players cannot leave Limbo until revived
 
 ---
 
@@ -463,11 +463,11 @@ Monitor new players' grace periods:
 
 ### Limbo Visiting Restrictions
 
-- ✅ Living players can visit Limbo anytime
-- ✅ Living players can return to Main anytime  
-- ❌ Dead players cannot use `/leavelimbo`
-- ❌ Dead players cannot use `/limbo` to teleport away
-- ✅ Dead players must be revived to leave Limbo
+- - Living players can visit Limbo anytime
+- - Living players can return to Main anytime  
+- - Dead players cannot use `/leavelimbo`
+- - Dead players cannot use `/limbo` to teleport away
+- - Dead players must be revived to leave Limbo
 
 ---
 

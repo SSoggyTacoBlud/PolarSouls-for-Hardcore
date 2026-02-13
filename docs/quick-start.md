@@ -28,7 +28,7 @@ Place `PolarSouls-1.3.6.jar` in the `plugins/` folder of **both** servers:
 - Main server: `/plugins/PolarSouls-1.3.6.jar`
 - Limbo server: `/plugins/PolarSouls-1.3.6.jar`
 
-> ⚠️ **Important:** Install on backend servers only, NOT on the Velocity proxy!
+> **Important:** Install on backend servers only, NOT on the Velocity proxy!
 
 ### Step 3: Generate Config
 
@@ -73,7 +73,7 @@ main-server-name: "main"      # Must match your Velocity config
 limbo-server-name: "limbo"    # Must match your Velocity config
 ```
 
-> 💡 **Tip:** The server names must exactly match the server names in your `velocity.toml` file.
+> **Tip:** The server names must exactly match the server names in your `velocity.toml` file.
 
 ### Step 6: Set Limbo Spawn
 
@@ -157,11 +157,11 @@ For the complete command list, see [Commands](commands.md).
 
 ## Need Help?
 
-- 📖 [Full Installation Guide](installation.md)
-- ⚙️ [Configuration Reference](configuration.md)
-- 🔧 [Troubleshooting](troubleshooting.md)
-- ❓ [FAQ](faq.md)
-- 🐛 [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
+- [Full Installation Guide](installation.md)
+- [Configuration Reference](configuration.md)
+- [Troubleshooting](troubleshooting.md)
+- [FAQ](faq.md)
+- [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
 
 ---
 

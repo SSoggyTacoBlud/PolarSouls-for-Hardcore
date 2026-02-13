@@ -33,7 +33,7 @@ This guide covers common issues and their solutions. If you don't find your issu
 
 ### Solutions
 
-#### ✅ Check Server Role Configuration
+#### - Check Server Role Configuration
 
 **On Main server:**
 ```yaml
@@ -45,7 +45,7 @@ is-limbo-server: false
 is-limbo-server: true
 ```
 
-#### ✅ Verify Server Names Match Proxy
+#### - Verify Server Names Match Proxy
 
 **In your `config.yml` (both servers):**
 ```yaml
@@ -62,14 +62,14 @@ limbo-server-name: "limbo"
 
 The names must **exactly match** (case-sensitive).
 
-#### ✅ Check Database Connection
+#### - Check Database Connection
 
 Both servers must connect to the same database:
 1. Check console logs for "Database connection established"
 2. Verify both servers have identical database credentials
 3. Test database connectivity from each server
 
-#### ✅ Verify Player Information Forwarding
+#### - Verify Player Information Forwarding
 
 **For Velocity:**
 ```toml
@@ -85,7 +85,7 @@ ip_forward: true
 bungeecord: true
 ```
 
-#### ✅ Check Death Mode Configuration
+#### - Check Death Mode Configuration
 
 **In Main server config:**
 ```yaml
@@ -95,7 +95,7 @@ main:
 
 If using `spectator` mode, players won't transfer to Limbo automatically.
 
-#### ✅ Look for Plugin Messaging Errors
+#### - Look for Plugin Messaging Errors
 
 Check console logs for:
 - "Failed to send player to server"
@@ -113,7 +113,7 @@ Check console logs for:
 
 ### Solutions
 
-#### ✅ Ensure HRM is Enabled
+#### - Ensure HRM is Enabled
 
 ```yaml
 hrm:
@@ -121,7 +121,7 @@ hrm:
   structure-revive: true  # For ritual structures
 ```
 
-#### ✅ Verify Ritual Structure is Correct
+#### - Verify Ritual Structure is Correct
 
 **Structure Requirements:**
 - **Bottom layer (3x3):**
@@ -134,7 +134,7 @@ hrm:
 - **Top layer:**
   - Dead player's head on fence
 
-#### ✅ Enable Structure Detection
+#### - Enable Structure Detection
 
 **In Main server config:**
 ```yaml
@@ -142,7 +142,7 @@ main:
   detect-hrm-revive: true
 ```
 
-#### ✅ Check Database Connectivity
+#### - Check Database Connectivity
 
 Try manual revival to test database:
 ```
@@ -151,13 +151,13 @@ Try manual revival to test database:
 
 If this works but structures don't, the issue is with structure detection.
 
-#### ✅ Verify Both Servers Access Same Database
+#### - Verify Both Servers Access Same Database
 
 1. Check that both servers show "Database connection established"
 2. Confirm identical database credentials on both servers
 3. Test database access from both server hosts
 
-#### ✅ Check Limbo Server is Running
+#### - Check Limbo Server is Running
 
 The Limbo server must be running to process revivals:
 - Verify Limbo server is online
@@ -175,7 +175,7 @@ The Limbo server must be running to process revivals:
 
 ### Solutions
 
-#### ✅ Check Grace Period Configuration
+#### - Check Grace Period Configuration
 
 ```yaml
 lives:
@@ -188,7 +188,7 @@ Formats:
 - `"90m"` = 90 minutes
 - `"0"` = Disabled
 
-#### ✅ Verify Grace Period Status
+#### - Verify Grace Period Status
 
 ```
 /pstatus <player>
@@ -196,14 +196,14 @@ Formats:
 
 Should show grace period remaining time.
 
-#### ✅ Set Grace Period Manually
+#### - Set Grace Period Manually
 
 For players who joined before enabling grace period:
 ```
 /psadmin grace <player> 24
 ```
 
-#### ✅ Remember: Online Time Only
+#### - Remember: Online Time Only
 
 Grace period only counts while player is online:
 - Playing 3 hours → 21 hours remaining
@@ -221,14 +221,14 @@ Grace period only counts while player is online:
 
 ### Solutions
 
-#### ✅ Update Both Servers to Same Version
+#### - Update Both Servers to Same Version
 
 1. Download the latest PolarSouls JAR
 2. Stop both servers
 3. Replace the JAR on **both** servers
 4. Start both servers
 
-#### ✅ Verify Versions Match
+#### - Verify Versions Match
 
 Check console logs on both servers:
 ```
@@ -237,14 +237,14 @@ Check console logs on both servers:
 
 Both must show the same version number.
 
-#### ✅ Clear Old Database Records (If Needed)
+#### - Clear Old Database Records (If Needed)
 
 If switching from old version, you may need to:
 ```sql
 DELETE FROM hardcore_players WHERE plugin_version IS NOT NULL;
 ```
 
-**⚠️ Warning:** This will reset all player data!
+**Warning:** This will reset all player data!
 
 ---
 
@@ -258,7 +258,7 @@ DELETE FROM hardcore_players WHERE plugin_version IS NOT NULL;
 
 ### Solutions
 
-#### ✅ Verify MySQL/MariaDB is Running
+#### - Verify MySQL/MariaDB is Running
 
 ```bash
 # Linux
@@ -270,7 +270,7 @@ sudo systemctl status mariadb
 Check Services for MySQL
 ```
 
-#### ✅ Test Database Credentials
+#### - Test Database Credentials
 
 Use MySQL client to test:
 ```bash
@@ -279,7 +279,7 @@ mysql -h localhost -P 3306 -u polarsouls_user -p
 
 Enter password when prompted. If this fails, your credentials are wrong.
 
-#### ✅ Check Firewall Rules
+#### - Check Firewall Rules
 
 Ensure backend servers can reach database:
 ```bash
@@ -289,7 +289,7 @@ telnet database_host 3306
 nc -zv database_host 3306
 ```
 
-#### ✅ For Pterodactyl: Use Panel Host
+#### - For Pterodactyl: Use Panel Host
 
 Don't use "localhost" - use the host provided by your panel:
 ```yaml
@@ -298,20 +298,20 @@ database:
   port: 3306
 ```
 
-#### ✅ Ensure Database Exists
+#### - Ensure Database Exists
 
 ```sql
 CREATE DATABASE IF NOT EXISTS polarsouls;
 ```
 
-#### ✅ Check User Permissions
+#### - Check User Permissions
 
 ```sql
 GRANT ALL PRIVILEGES ON polarsouls.* TO 'polarsouls_user'@'%';
 FLUSH PRIVILEGES;
 ```
 
-#### ✅ Verify Connection Pool Size
+#### - Verify Connection Pool Size
 
 For high-traffic servers, increase pool size:
 ```yaml
@@ -356,14 +356,14 @@ main:
 
 ### Solutions
 
-#### ✅ Confirm Extra Life is Enabled
+#### - Confirm Extra Life is Enabled
 
 ```yaml
 extra-life:
   enabled: true
 ```
 
-#### ✅ Check Recipe Configuration
+#### - Check Recipe Configuration
 
 Verify all materials are valid Minecraft material names:
 ```yaml
@@ -380,7 +380,7 @@ extra-life:
       I: "NETHERITE_INGOT"
 ```
 
-#### ✅ Verify Player is Not at Max Lives
+#### - Verify Player is Not at Max Lives
 
 Extra Life cannot exceed max lives:
 ```yaml
@@ -393,11 +393,11 @@ Check with:
 /pstatus
 ```
 
-#### ✅ Ensure Player is Alive
+#### - Ensure Player is Alive
 
 Can't use Extra Life while dead.
 
-#### ✅ Test Recipe
+#### - Test Recipe
 
 Try crafting with exact materials in the exact pattern defined.
 
@@ -411,13 +411,13 @@ Try crafting with exact materials in the exact pattern defined.
 
 ### Solutions
 
-#### ✅ Enable in Configuration
+#### - Enable in Configuration
 
 ```yaml
 hardcore-hearts: true
 ```
 
-#### ✅ Understand It's Cosmetic Only
+#### - Understand It's Cosmetic Only
 
 Hardcore hearts:
 - Are purely visual
@@ -425,14 +425,14 @@ Hardcore hearts:
 - Lives system works regardless
 - May require client support or resource pack
 
-#### ✅ Restart Server
+#### - Restart Server
 
 After enabling, restart the server:
 ```
 /psadmin reload
 ```
 
-#### ✅ Note: Client-Side Feature
+#### - Note: Client-Side Feature
 
 This feature may require:
 - Specific client mods
@@ -450,7 +450,7 @@ This feature may require:
 
 ### Solutions
 
-#### ✅ Verify Structure is Exactly Correct
+#### - Verify Structure is Exactly Correct
 
 **Common mistakes:**
 - Using wrong blocks (must be Soul Sand at corners)
@@ -458,20 +458,20 @@ This feature may require:
 - Wither Roses not on Soul Sand corners
 - Structure size wrong (must be exactly 3x3x3)
 
-#### ✅ Check Player Head is Correct
+#### - Check Player Head is Correct
 
 - Must be the actual dead player's head
 - Use Revive Skull to get correct head
 - Or use `/give @s player_head{SkullOwner:"PlayerName"}`
 
-#### ✅ Ensure Detection is Enabled
+#### - Ensure Detection is Enabled
 
 ```yaml
 main:
   detect-hrm-revive: true
 ```
 
-#### ✅ Verify HRM is Enabled
+#### - Verify HRM is Enabled
 
 ```yaml
 hrm:
@@ -479,7 +479,7 @@ hrm:
   structure-revive: true
 ```
 
-#### ✅ Check Plugin is Listening for Block Places
+#### - Check Plugin is Listening for Block Places
 
 Restart server if needed:
 ```
@@ -497,14 +497,14 @@ Restart server if needed:
 
 ### Solutions
 
-#### ✅ Enable Recipe
+#### - Enable Recipe
 
 ```yaml
 hrm:
   revive-skull-recipe: true
 ```
 
-#### ✅ Use Correct Recipe (Shapeless)
+#### - Use Correct Recipe (Shapeless)
 
 Place anywhere in crafting grid:
 - 4 Obsidian
@@ -514,7 +514,7 @@ Place anywhere in crafting grid:
 
 **Note:** Order doesn't matter (shapeless recipe).
 
-#### ✅ Restart Server
+#### - Restart Server
 
 After enabling:
 ```
@@ -532,7 +532,7 @@ After enabling:
 
 ### Solutions
 
-#### ✅ Check Permission
+#### - Check Permission
 
 ```yaml
 permissions:
@@ -544,17 +544,17 @@ Grant permission:
 /lp user <player> permission set polarsouls.visit true
 ```
 
-#### ✅ Verify Limbo Server is Online
+#### - Verify Limbo Server is Online
 
 Limbo server must be running for visits.
 
-#### ✅ Check Server Name Configuration
+#### - Check Server Name Configuration
 
 ```yaml
 limbo-server-name: "limbo"  # Must match proxy config
 ```
 
-#### ✅ Ensure Player is Alive
+#### - Ensure Player is Alive
 
 Dead players can't use `/limbo` - they're already there!
 
@@ -569,34 +569,34 @@ Dead players can't use `/limbo` - they're already there!
 
 ### Solutions
 
-#### ✅ Check Java Version
+#### - Check Java Version
 
 Requires Java 21 or higher:
 ```bash
 java -version
 ```
 
-#### ✅ Verify Minecraft Version
+#### - Verify Minecraft Version
 
 Plugin supports 1.21.X only. Check server version:
 ```
 /version
 ```
 
-#### ✅ Check Console for Errors
+#### - Check Console for Errors
 
 Look for:
 - "UnsupportedClassVersionError" → Java version too old
 - "NoClassDefFoundError" → Missing dependency
 - Other error messages
 
-#### ✅ Verify Plugin File is Not Corrupted
+#### - Verify Plugin File is Not Corrupted
 
 1. Re-download the JAR
 2. Check file size matches
 3. Replace old JAR with new one
 
-#### ✅ Check Plugins Folder
+#### - Check Plugins Folder
 
 Ensure JAR is in `plugins/` folder, not a subfolder.
 
@@ -628,10 +628,10 @@ If your issue isn't covered here:
 
 ## Related Resources
 
-- 📖 [Installation Guide](installation.md)
-- ⚙️ [Configuration Reference](configuration.md)
-- 🎮 [Commands](commands.md)
-- ❓ [FAQ](faq.md)
+- [Installation Guide](installation.md)
+- [Configuration Reference](configuration.md)
+- [Commands](commands.md)
+- [FAQ](faq.md)
 
 ---
 

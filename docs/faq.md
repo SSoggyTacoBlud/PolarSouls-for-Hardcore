@@ -13,9 +13,9 @@ Quick answers to common questions about PolarSouls installation, configuration, 
 
 **A:** No! PolarSouls is **NOT a proxy plugin**. Install it **only on your backend servers** (Main and Limbo). Installing on Velocity/BungeeCord/Waterfall will NOT work.
 
-- ✅ Install on Main server
-- ✅ Install on Limbo server
-- ❌ Do NOT install on Velocity proxy
+- - Install on Main server
+- - Install on Limbo server
+- - Do NOT install on Velocity proxy
 
 ---
 
@@ -140,10 +140,10 @@ Example: New player with "24h" grace who plays 3 hours, logs off, then returns w
 ```
 
 **Restrictions:**
-- ✅ Living players can visit anytime
-- ✅ Living players can leave anytime
-- ❌ Dead players cannot use `/leavelimbo`
-- ❌ Dead players cannot visit Main until revived
+- - Living players can visit anytime
+- - Living players can leave anytime
+- - Dead players cannot use `/leavelimbo`
+- - Dead players cannot visit Main until revived
 
 ---
 
@@ -565,11 +565,11 @@ Or set `enabled: false` to disable everything.
 
 ## Need More Help?
 
-- 📖 [Installation Guide](installation.md)
+- [Installation Guide](installation.md)
 - 📋 [Commands Reference](commands.md)
-- ⚙️ [Configuration Reference](configuration.md)
+- [Configuration Reference](configuration.md)
 - 🏗️ [Revival System Guide](revival-system.md)
-- 🐛 [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
+- [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
 
 ---
 

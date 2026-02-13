@@ -5,8 +5,8 @@ This guide explains how to enable GitHub Pages for the PolarSouls documentation.
 ## Prerequisites
 
 - Repository owner/admin access
-- Documentation files are in the `docs/` directory (✅ already done)
-- GitHub Actions workflow is configured (✅ already done)
+- Documentation files are in the `docs/` directory ( already done)
+- GitHub Actions workflow is configured ( already done)
 
 ## Step 1: Enable GitHub Pages
 
@@ -168,10 +168,10 @@ If you encounter issues:
 
 After enabling GitHub Pages:
 
-1. ✅ Share the documentation URL with users
-2. ✅ Update Modrinth plugin page with wiki link (if not already done)
-3. ✅ Consider adding documentation badge to README
-4. ✅ Monitor analytics (optional - can enable in GitHub Pages settings)
+1.  Share the documentation URL with users
+2.  Update Modrinth plugin page with wiki link (if not already done)
+3.  Consider adding documentation badge to README
+4.  Monitor analytics (optional - can enable in GitHub Pages settings)
 
 ---
 

@@ -6,14 +6,14 @@
 
 A comprehensive hardcore lives system plugin for Minecraft 1.21.X (Spigot/Paper/Purpur) designed for Velocity proxy networks. Features a sophisticated lives-based death mechanic where players are exiled to a Limbo server upon losing all lives, with multiple revival methods to bring them back.
 
-> 📚 **[Complete Documentation Wiki →](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)** - Installation guides, configuration reference, commands, troubleshooting, and more!
+> **[Complete Documentation Wiki →](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)** - Installation guides, configuration reference, commands, troubleshooting, and more!
 >
 > **Quick Links:**
-> - 🚀 [Quick Start Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/quick-start.html)
-> - 📖 [Installation Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/installation.html)
-> - ⚙️ [Configuration Reference](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/configuration.html)
-> - 🔧 [Troubleshooting](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/troubleshooting.html)
-> - ❓ [FAQ](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/faq.html)
+> - [Quick Start Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/quick-start.html)
+> - [Installation Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/installation.html)
+> - [Configuration Reference](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/configuration.html)
+> - [Troubleshooting](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/troubleshooting.html)
+> - [FAQ](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/faq.html)
 
 ## Features Overview
 
@@ -62,10 +62,10 @@ PolarSouls offers three death mode configurations to match your server's gamepla
 | **`limbo`** | Dead players are immediately transferred to Limbo upon losing all lives. No spectator window. | Hardcore servers enforcing strict separation between living and dead |
 
 All modes support all revival methods:
-- ✅ Hardcore Revive Mode (HRM) ritual structures
-- ✅ Revive Skull item menu
-- ✅ `/revive <player>` command
-- ✅ Admin commands (`/psadmin revive`)
+- Hardcore Revive Mode (HRM) ritual structures
+- Revive Skull item menu
+- `/revive <player>` command
+- Admin commands (`/psadmin revive`)
 
 ## Built-in HRM (Hardcore Revive Mode) Features
 *(Revival system inspired by [Hardcore Revive Mod](https://modrinth.com/plugin/hardcore-revive-mod))*
@@ -93,10 +93,10 @@ Build a 3x3x3 beacon-style structure to revive dead players:
   - Place the **dead player's head** on top of the fence to trigger revival
 
 **Features:**
-- ✅ Auto-detects when structure is completed (plugin automatically saves revival to database)
-- ✅ Configurable structure preservation (`hrm.leave-structure-base: true/false`)
-- ✅ Supports any ore block type for the base (customize for difficulty/aesthetics)
-- ✅ Visual feedback when revival triggers
+- Auto-detects when structure is completed (plugin automatically saves revival to database)
+- Configurable structure preservation (`hrm.leave-structure-base: true/false`)
+- Supports any ore block type for the base (customize for difficulty/aesthetics)
+- Visual feedback when revival triggers
 
 **Configurable:** Can be disabled entirely in `config.yml` (`hrm.structure-revive: false`)
 
@@ -186,10 +186,10 @@ The **grace period** protects new players from losing lives while they learn the
 Alive players can visit Limbo using `/limbo` to interact with dead teammates.
 
 **Features:**
-- ✅ `/limbo` - Teleport to Limbo server (requires `polarsouls.visit` permission)
-- ✅ `/leavelimbo` (or `/hub`) - Return to Main server
-- ✅ Alive players can freely come and go
-- ❌ Dead players cannot leave until revived
+- `/limbo` - Teleport to Limbo server (requires `polarsouls.visit` permission)
+- `/leavelimbo` (or `/hub`) - Return to Main server
+- Alive players can freely come and go
+- Dead players cannot leave until revived
 - Custom welcome messages for visitors vs. dead players
 
 ## Requirements
@@ -202,21 +202,21 @@ Alive players can visit Limbo using `/limbo` to interact with dead teammates.
   - **Main** - Survival/gameplay server
   - **Limbo** - Purgatory server (optional if using `spectator` death mode)
 
-> **⚠️ IMPORTANT:** Do **NOT** enable `hardcore=true` in `server.properties` on either server. Leave it as `false`. The plugin manages hardcore mechanics internally - enabling Minecraft's built-in hardcore mode will break the plugin. If you already have it on, either delete your world or search up how you edit the game files.
+> **IMPORTANT:** Do **NOT** enable `hardcore=true` in `server.properties` on either server. Leave it as `false`. The plugin manages hardcore mechanics internally - enabling Minecraft's built-in hardcore mode will break the plugin. If you already have it on, either delete your world or search up how you edit the game files.
 
-> **💡 Cosmetic Hearts:** The plugin can display hardcore-style hearts on clients (`hardcore-hearts: true` in config) without enabling actual hardcore mode.
+> **Cosmetic Hearts:** The plugin can display hardcore-style hearts on clients (`hardcore-hearts: true` in config) without enabling actual hardcore mode.
 > **This is inspired by https://github.com/cerus-mc/hardcore-hearts.**
 
 ## Proxy / Backend Installation
 
 ### Critical Setup Rules
 
-**❌ DO NOT install on proxy:**
+**DO NOT install on proxy:**
 - PolarSouls is NOT a proxy plugin
 - Install ONLY on backend servers (Main and Limbo)
 - Do NOT place in Velocity/BungeeCord/Waterfall plugins folder
 
-**✅ Install on both backend servers:**
+**Install on both backend servers:**
 - Main server (survival)
 - Limbo server (purgatory)
 
@@ -251,7 +251,7 @@ After configuration, test the complete flow:
 4. Use `/psadmin revive <player>` from Main server console
 5. Verify automatic return to Main server
 
-> **🐛 BungeeCord/Waterfall Status:** Untested but may work. Please [open an issue](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) if you test it!
+> **BungeeCord/Waterfall Status:** Untested but may work. Please [open an issue](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) if you test it!
 
 ## Installation
 
@@ -518,51 +518,51 @@ Variables you can use:
 ## Troubleshooting
 
 ### Players aren't being transferred to Limbo
-- ✅ Check that `is-limbo-server` is set correctly on both servers (false on Main, true on Limbo)
-- ✅ Verify both servers use identical database credentials
-- ✅ Confirm `main-server-name` and `limbo-server-name` match your proxy config
-- ✅ Check Velocity/proxy player forwarding is enabled
-- ✅ Look for errors in console related to database connection or BungeeCord messaging
+- Check that `is-limbo-server` is set correctly on both servers (false on Main, true on Limbo)
+- Verify both servers use identical database credentials
+- Confirm `main-server-name` and `limbo-server-name` match your proxy config
+- Check Velocity/proxy player forwarding is enabled
+- Look for errors in console related to database connection or BungeeCord messaging
 
 ### Revivals aren't working
-- ✅ Ensure HRM is enabled: `hrm.enabled: true` and `hrm.structure-revive: true`
-- ✅ Check revival structure is built correctly (see structure guide above)
-- ✅ Verify `detect-hrm-revive: true` in Main server config
-- ✅ Try manual revival with `/revive <player>` to test database connectivity
-- ✅ Check both servers can access the shared MySQL database
+- Ensure HRM is enabled: `hrm.enabled: true` and `hrm.structure-revive: true`
+- Check revival structure is built correctly (see structure guide above)
+- Verify `detect-hrm-revive: true` in Main server config
+- Try manual revival with `/revive <player>` to test database connectivity
+- Check both servers can access the shared MySQL database
 
 ### Players lose lives during grace period
-- ✅ Check grace period is configured: `grace-period: "24h"` (not `"0"`)
-- ✅ Grace period counts only online time - verify with `/pstatus <player>`
-- ✅ If player joined before enabling grace, use `/psadmin grace <player> <hours>` to set manually
+- Check grace period is configured: `grace-period: "24h"` (not `"0"`)
+- Grace period counts only online time - verify with `/pstatus <player>`
+- If player joined before enabling grace, use `/psadmin grace <player> <hours>` to set manually
 
 ### Version mismatch warnings
-- ✅ Both servers MUST run the same PolarSouls version
-- ✅ Download the same `.jar` file for both Main and Limbo
-- ✅ Check console logs for version numbers
-- ✅ Update both servers simultaneously
+- Both servers MUST run the same PolarSouls version
+- Download the same `.jar` file for both Main and Limbo
+- Check console logs for version numbers
+- Update both servers simultaneously
 
 ### Database connection errors
-- ✅ Verify MySQL/MariaDB is running and accessible
-- ✅ Test database credentials with MySQL client
-- ✅ Check firewall rules allow backend servers to reach database
-- ✅ For Pterodactyl: Use the database host from the panel, not "localhost"
-- ✅ Ensure database exists (create it if needed)
+- Verify MySQL/MariaDB is running and accessible
+- Test database credentials with MySQL client
+- Check firewall rules allow backend servers to reach database
+- For Pterodactyl: Use the database host from the panel, not "localhost"
+- Ensure database exists (create it if needed)
 
 ### Players reconnecting go straight to Limbo (hybrid mode)
-- ✅ This is intended behavior! In hybrid mode, disconnecting while dead skips spectator timeout
-- ✅ If you want dead players to stay as spectators forever, use `death-mode: "spectator"`
+- This is intended behavior! In hybrid mode, disconnecting while dead skips spectator timeout
+- If you want dead players to stay as spectators forever, use `death-mode: "spectator"`
 
 ### Extra Life items not working
-- ✅ Confirm `extra-life.enabled: true`
-- ✅ Check recipe is valid (all material names must be correct)
-- ✅ Verify player doesn't have max lives already
-- ✅ Can't use while dead, player must be alive
+- Confirm `extra-life.enabled: true`
+- Check recipe is valid (all material names must be correct)
+- Verify player doesn't have max lives already
+- Can't use while dead, player must be alive
 
 ### Hardcore hearts not showing
-- ✅ Enable in config: `hardcore-hearts: true`
-- ✅ Requires client mod support or resource pack (cosmetic only)
-- ✅ Does not affect gameplay - lives system works regardless
+- Enable in config: `hardcore-hearts: true`
+- Requires client mod support or resource pack (cosmetic only)
+- Does not affect gameplay - lives system works regardless
 
 ### Getting help
 If issues persist:

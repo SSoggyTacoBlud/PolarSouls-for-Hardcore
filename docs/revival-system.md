@@ -117,10 +117,10 @@ Soul Sand    Stair       Soul Sand
 
 Once the head is placed on the fence, the plugin **automatically detects** the completed structure and:
 
-1. ✅ Revives the dead player (database updated)
-2. ✅ Teleports the player back to Main server
-3. ✅ Restores lives (default: 1)
-4. ✅ Optionally destroys the structure (configurable)
+1. - Revives the dead player (database updated)
+2. - Teleports the player back to Main server
+3. - Restores lives (default: 1)
+4. - Optionally destroys the structure (configurable)
 
 ### Configuration Options
 
@@ -205,11 +205,11 @@ Click on any player to get their head.
 
 ### Features
 
-- ✅ Can be used multiple times (doesn't break)
-- ✅ Opens a clean GUI
-- ✅ No confusing items lying around
-- ✅ Can only be used by living players
-- ✅ Shows all currently dead players
+- - Can be used multiple times (doesn't break)
+- - Opens a clean GUI
+- - No confusing items lying around
+- - Can only be used by living players
+- - Shows all currently dead players
 
 ### Configuration
 
@@ -250,10 +250,10 @@ A craftable item that grants players +1 life when used.
 
 ### Features
 
-- ✅ Works for any player (not just newly revived)
-- ✅ Respects maximum lives cap (can't exceed max-lives setting)
-- ❌ Cannot be used while dead
-- ✅ Shows clear success/failure message
+- - Works for any player (not just newly revived)
+- - Respects maximum lives cap (can't exceed max-lives setting)
+- - Cannot be used while dead
+- - Shows clear success/failure message
 
 ### Customizing the Recipe
 
@@ -349,10 +349,10 @@ Admin command for reviving. Same result as `/revive` but requires admin permissi
 ### Command Revival Benefits
 
 - ⚡ Instant (no structure building required)
-- 🎯 Precise (revive specific player)
+- Precise (revive specific player)
 - 🔑 Permission-based (can be given to moderators)
-- 🔄 Works even if player is offline
-- ✅ Works from console
+- Works even if player is offline
+- - Works from console
 
 ### Example Usage
 
@@ -423,8 +423,8 @@ This is useful if the original head was lost or destroyed.
 
 - ⏱️ Heads stay on ground for 5 minutes by default (Minecraft setting)
 - 💾 Data persists in database permanently
-- 📍 Can use Revive Skull to get another copy anytime
-- 🔄 Same player can be revived multiple times
+- Can use Revive Skull to get another copy anytime
+- Same player can be revived multiple times
 
 ---
 
@@ -538,20 +538,20 @@ After revival, player has this many seconds of protection where they cannot lose
 
 ### Ritual Structure Locations
 
-- 🏠 Build near your base for quick revivals
+- Build near your base for quick revivals
 - 🔒 Build in a secure location (protected from mobs)
 - 🎨 Customize ore block color for aesthetic (any ore works)
 
 ### Revive Skull Strategies
 
 - 🏪 Keep Revive Skull in shared chest
-- 📦 Duplicate recipe components for multiple skulls
-- 🎯 Use when original head is lost or too far away
+- Duplicate recipe components for multiple skulls
+- Use when original head is lost or too far away
 
 ### Extra Life Farming
 
 - ⛏️ Farm required materials (Nether stars, netherite, etc.)
-- 📍 Create a dedicated farm for extra life materials
+- Create a dedicated farm for extra life materials
 - 🤝 Distribute extra life items to team members
 
 ---
@@ -602,8 +602,8 @@ After revival, player has this many seconds of protection where they cannot lose
 ## See Also
 
 - 📋 [Commands Reference](commands.md)
-- ⚙️ [Configuration Reference](configuration.md)
-- ❓ [FAQ](faq.md)
+- [Configuration Reference](configuration.md)
+- [FAQ](faq.md)
 
 ---
 

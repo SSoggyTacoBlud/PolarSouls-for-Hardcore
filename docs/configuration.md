@@ -26,7 +26,7 @@ PolarSouls uses a `config.yml` file that is automatically generated when you fir
 
 **Location:** `plugins/PolarSouls/config.yml` on both servers
 
-> ⚠️ **Important:** After editing the config file, either:
+> **Important:** After editing the config file, either:
 > - Restart both servers, or
 > - Run `/psadmin reload` to reload without restart (some changes may require restart)
 
@@ -58,7 +58,7 @@ main-server-name: "main"     # Name of Main server in proxy config
 limbo-server-name: "limbo"   # Name of Limbo server in proxy config
 ```
 
-> 💡 **Tip:** The server names must exactly match the server names in your `velocity.toml` file.
+> **Tip:** The server names must exactly match the server names in your `velocity.toml` file.
 
 ---
 
@@ -531,7 +531,7 @@ hardcore-hearts: true
 
 Display Minecraft's hardcore-style hearts (half-hearts instead of full hearts). This is **cosmetic only** and doesn't affect gameplay.
 
-> 💡 Requires client mod support or resource pack to display properly
+> Requires client mod support or resource pack to display properly
 
 ### Debug Logging
 
@@ -602,10 +602,10 @@ To reload configuration without restarting:
 
 ## Need Help?
 
-- 📖 [Installation Guide](installation.md)
-- 🔧 [Troubleshooting Guide](troubleshooting.md)
+- [Installation Guide](installation.md)
+- [Troubleshooting Guide](troubleshooting.md)
 - 📋 [Commands Reference](commands.md)
-- ❓ [FAQ](faq.md)
+- [FAQ](faq.md)
 
 ---
 

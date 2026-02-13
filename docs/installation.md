@@ -34,11 +34,11 @@ You need **two backend servers**:
 - **Main Server** - Your primary survival/gameplay server
 - **Limbo Server** - Purgatory server for dead players
 
-> 💡 **Note:** If using `spectator` death mode, the Limbo server is optional.
+> **Note:** If using `spectator` death mode, the Limbo server is optional.
 
 ### Important: Do NOT Use Hardcore Mode
 
-⚠️ **CRITICAL:** Do **NOT** enable `hardcore=true` in `server.properties` on either server.
+**CRITICAL:** Do **NOT** enable `hardcore=true` in `server.properties` on either server.
 
 Leave it as `false`. The plugin manages hardcore mechanics internally - enabling Minecraft's built-in hardcore mode will break the plugin.
 
@@ -104,7 +104,7 @@ database:
   table-name: "hardcore_players" # Table name (default is fine)
 ```
 
-> 💡 **Tip:** The database can be shared with other plugins like CoreProtect. PolarSouls uses its own table.
+> **Tip:** The database can be shared with other plugins like CoreProtect. PolarSouls uses its own table.
 
 ### Connection Pool Settings
 
@@ -141,12 +141,12 @@ Download `PolarSouls-1.3.6.jar` (or latest version).
 
 ### Critical Setup Rules
 
-**❌ DO NOT install on proxy:**
+**DO NOT install on proxy:**
 - PolarSouls is NOT a proxy plugin
 - Install ONLY on backend servers (Main and Limbo)
 - Do NOT place in Velocity/BungeeCord plugins folder
 
-**✅ DO install on both backend servers:**
+**DO install on both backend servers:**
 - Must be installed on Main server
 - Must be installed on Limbo server
 - Both servers must use the SAME version
@@ -172,7 +172,7 @@ try = [
 
 ### For BungeeCord/Waterfall
 
-> ⚠️ **Note:** BungeeCord/Waterfall support is untested. Please [report](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) if you test it!
+> **Note:** BungeeCord/Waterfall support is untested. Please [report](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) if you test it!
 
 **In BungeeCord `config.yml`:**
 ```yaml
@@ -331,44 +331,44 @@ Before testing, verify:
 
 ### Verification
 
-If all tests pass, your installation is complete! 🎉
+If all tests pass, your installation is complete! 
 
 Check console logs for:
-- ✅ "Database connection established successfully"
-- ✅ "PolarSouls version X.X.X enabled"
-- ✅ No error messages or warnings
+- "Database connection established successfully"
+- "PolarSouls version X.X.X enabled"
+- No error messages or warnings
 
 ## Common Mistakes to Avoid
 
-### ❌ Mistake 1: Installing on Proxy
+### Mistake 1: Installing on Proxy
 **Wrong:** Installing PolarSouls on Velocity/BungeeCord
 **Right:** Install only on backend servers (Main and Limbo)
 
-### ❌ Mistake 2: Different Database Credentials
+### Mistake 2: Different Database Credentials
 **Wrong:** Using different database credentials on each server
 **Right:** Both servers must use identical database settings
 
-### ❌ Mistake 3: Server Names Don't Match
+### Mistake 3: Server Names Don't Match
 **Wrong:** Config says "main" but velocity.toml says "survival"
 **Right:** Server names must exactly match proxy configuration
 
-### ❌ Mistake 4: Wrong is-limbo-server Setting
+### Mistake 4: Wrong is-limbo-server Setting
 **Wrong:** Both servers have `is-limbo-server: false`
 **Right:** Main = false, Limbo = true
 
-### ❌ Mistake 5: Enabling Hardcore Mode
+### Mistake 5: Enabling Hardcore Mode
 **Wrong:** Setting `hardcore=true` in `server.properties`
 **Right:** Keep `hardcore=false` - plugin manages hardcore mechanics
 
-### ❌ Mistake 6: Different Plugin Versions
+### Mistake 6: Different Plugin Versions
 **Wrong:** Main server has v1.3.5, Limbo has v1.3.6
 **Right:** Both servers must use the exact same version
 
-### ❌ Mistake 7: Not Setting Limbo Spawn
+### Mistake 7: Not Setting Limbo Spawn
 **Wrong:** Forgetting to run `/setlimbospawn`
 **Right:** Set spawn point before testing
 
-### ❌ Mistake 8: Firewall Blocking Database
+### Mistake 8: Firewall Blocking Database
 **Wrong:** Servers can't reach database due to firewall
 **Right:** Ensure firewall allows backend → database connections
 
@@ -383,10 +383,10 @@ Now that PolarSouls is installed:
 
 ## Need Help?
 
-- 📖 [Configuration Reference](configuration.md)
-- 🔧 [Troubleshooting Guide](troubleshooting.md)
-- ❓ [FAQ](faq.md)
-- 🐛 [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
+- [Configuration Reference](configuration.md)
+- [Troubleshooting Guide](troubleshooting.md)
+- [FAQ](faq.md)
+- [Report Issues](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues)
 
 ---
 
