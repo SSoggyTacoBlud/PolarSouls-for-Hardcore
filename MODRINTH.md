@@ -8,7 +8,7 @@ A comprehensive hardcore lives system plugin designed for Velocity proxy network
 
 ---
 
-## 🎮 Features
+## Features
 
 - **Lives System** - Configurable starting lives (default: 2) with maximum cap (default: 5)
 - **Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
@@ -21,7 +21,7 @@ A comprehensive hardcore lives system plugin designed for Velocity proxy network
 
 ---
 
-## 🔧 How It Works
+## How It Works
 
 The plugin runs on two backend servers behind a **Velocity proxy** (might work on BungeeCord/Waterfall, not tested yet): **Main** (survival) and **Limbo** (purgatory). Both share a MySQL database.
 
@@ -36,7 +36,7 @@ The plugin runs on two backend servers behind a **Velocity proxy** (might work o
 
 ---
 
-## 💀 Death Modes
+## Death Modes
 
 | Mode | Behavior | Best For |
 |------|----------|----------|
@@ -48,7 +48,7 @@ All modes support reviving via ritual structures, Revive Skull, and `/revive` co
 
 ---
 
-## 🏥 Built-in Revival System
+## Built-in Revival System
 *(Inspired by [Hardcore Revive Mod](https://modrinth.com/plugin/hardcore-revive-mod))*
 
 ### Player Head Drops
@@ -66,7 +66,7 @@ The plugin auto-detects when the structure is completed and revives the player!
 
 ### Craftable Items
 
-**🔮 Revive Skull** - Right-click to open a menu of dead players and receive their head for the ritual.
+**Revive Skull** - Right-click to open a menu of dead players and receive their head for the ritual.
 
 **Crafting Recipe:**
 ```
@@ -75,7 +75,7 @@ Totem    | Any Skull  | Totem
 Obsidian | Ghast Tear | Obsidian
 ```
 
-**⭐ Extra Life** - Right-click to gain +1 life (max cap applies). Recipe is fully customizable!
+**Extra Life** - Right-click to gain +1 life (max cap applies). Recipe is fully customizable!
 
 **Default Recipe:**
 ```
@@ -101,7 +101,7 @@ Wearing a dead player's head grants **Speed II** and **Night Vision** - useful f
 
 ---
 
-## 📥 Installation
+## Installation
 
 ### Quick Start (8 Steps)
 
@@ -148,7 +148,7 @@ Wearing a dead player's head grants **Speed II** and **Night Vision** - useful f
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 See the generated `config.yml` for all options with detailed comments. Key settings:
 
@@ -196,7 +196,7 @@ All messages are customizable with Minecraft color codes!
 
 ---
 
-## 🎮 Commands
+## Commands
 
 ### Player Commands
 | Command | Description | Permission |
@@ -222,7 +222,7 @@ All messages are customizable with Minecraft color codes!
 
 ---
 
-## 🔒 Permissions
+## Permissions
 
 | Permission | Description | Default |
 |------------|-------------|---------|
@@ -234,7 +234,7 @@ All messages are customizable with Minecraft color codes!
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Players not transferring to Limbo?**
 - Check `is-limbo-server` is set correctly on both servers
@@ -258,7 +258,7 @@ All messages are customizable with Minecraft color codes!
 
 ---
 
-## 🔄 Update Checking
+## Update Checking
 
 PolarSouls includes automatic update checking via Modrinth:
 - Checks for new versions on startup
@@ -268,13 +268,13 @@ PolarSouls includes automatic update checking via Modrinth:
 
 ---
 
-## 📜 License
+## License
 
 **GPL-3.0** - See [LICENSE](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/blob/main/LICENSE)
 
 ---
 
-## 🙏 Credits
+## Credits
 
 - Revival mechanics inspired by [Hardcore Revive Mod](https://modrinth.com/plugin/hardcore-revive-mod)
 - Author: Mario
@@ -282,4 +282,4 @@ PolarSouls includes automatic update checking via Modrinth:
 
 ---
 
-**Enjoying PolarSouls?** Leave a review on Modrinth and star the [GitHub repo](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore)! 🌟
+**Enjoying PolarSouls?** Leave a review on Modrinth and star the [GitHub repo](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore)!

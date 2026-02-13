@@ -8,21 +8,21 @@ A comprehensive hardcore lives system plugin for Minecraft 1.21.X (Spigot/Paper/
 
 ## Features Overview
 
-🎮 **Lives System** - Configurable starting lives (default: 2), with maximum cap (default: 5)
+**Lives System** - Configurable starting lives (default: 2), with maximum cap (default: 5)
 
-💀 **Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
+**Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
 
-🏥 **Multiple Revival Methods** - Ritual structures, Revive Skull item, or admin commands
+**Multiple Revival Methods** - Ritual structures, Revive Skull item, or admin commands
 
-🛡️ **Grace Period Protection** - New players get protected time to learn (counts only online time)
+**Grace Period Protection** - New players get protected time to learn (counts only online time)
 
-⚡ **Extra Life Items** - Craftable items to gain additional lives (fully customizable recipe)
+**Extra Life Items** - Craftable items to gain additional lives (fully customizable recipe)
 
-🌐 **Cross-Server Architecture** - MySQL-backed persistence across Main and Limbo servers
+**Cross-Server Architecture** - MySQL-backed persistence across Main and Limbo servers
 
-🔄 **Automatic Transfer** - Dead players sent to Limbo, revived players return to Main automatically
+**Automatic Transfer** - Dead players sent to Limbo, revived players return to Main automatically
 
-👥 **Limbo Visiting** - Alive players can visit Limbo to interact with dead teammates
+**Limbo Visiting** - Alive players can visit Limbo to interact with dead teammates
 
 ## How It Works
 
