@@ -4,100 +4,102 @@
 
 **Version 1.3.6** | Minecraft 1.21.X | Spigot/Paper/Purpur
 
-A comprehensive hardcore lives system plugin designed for Velocity proxy networks. When players lose all their lives, they're exiled to a Limbo server until teammates revive them through various methods.
+A hardcore lives system plugin for Velocity proxy networks. When you die enough times, you get exiled to a Limbo server until your teammates revive you.
+
+> **[Read the Full Documentation →](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)** - Complete installation guides, configuration reference, troubleshooting, and more!
 
 ---
 
 ## Features
 
-- **Lives System** - Configurable starting lives (default: 2) with maximum cap (default: 5)
-- **Three Death Modes** - Choose between immediate Limbo exile, permanent spectator, or hybrid timeout
-- **Multiple Revival Methods** - Ritual structures, Revive Skull item, or admin commands
-- **Grace Period Protection** - New players get protected time to learn (counts only online time)
-- **Extra Life Items** - Craftable items to gain additional lives (fully customizable recipe)
-- **Cross-Server Architecture** - MySQL-backed persistence across Main and Limbo servers
-- **Automatic Transfer** - Dead players sent to Limbo, revived players return to Main automatically
-- **Limbo Visiting** - Alive players can visit Limbo to interact with dead teammates
+- **Lives System** - start with 2 lives (configurable), max 5
+- **Three Death Modes** - instant Limbo, permanent spectator, or hybrid timeout
+- **Multiple Revival Methods** - ritual structures, Revive Skull, or commands
+- **Grace Period** - newbies get protected time (only counts online time)
+- **Extra Life Items** - craftable items for more lives (fully customizable)
+- **Cross-Server** - MySQL syncs Main and Limbo
+- **Auto Transfer** - dead go to Limbo, revived come back
+- **Limbo Visiting** - living players can visit dead teammates
 
 ---
 
 ## How It Works
 
-The plugin runs on two backend servers behind a **Velocity proxy** (might work on BungeeCord/Waterfall, not tested yet): **Main** (survival) and **Limbo** (purgatory). Both share a MySQL database.
+Two servers behind a **Velocity proxy** (might work on BungeeCord/Waterfall but not tested): **Main** (play) and **Limbo** (dead zone). Both talk to same MySQL database.
 
-**Basic Flow:**
-1. Players start with configurable lives (default: 2)
-2. Each death costs one life
-3. **Grace period** protects new players from losing lives (counts only online time)
-4. At 0 lives, behavior depends on **death mode** (see below)
-5. Teammates can revive using ritual structures, Revive Skull, or `/revive` command
-6. Revived players automatically return to Main with restored lives
-7. Alive players can visit Limbo with `/limbo` and return with `/leavelimbo`
+**Flow:**
+1. Start with 2 lives (configurable)
+2. Die = -1 life
+3. Grace period protects newbies (only ticks online)
+4. At 0 lives = depends on death mode
+5. Revival methods: ritual structures, Revive Skull, or `/revive`
+6. Revived = auto-teleport back to Main with lives
+7. Living players can `/limbo` and `/leavelimbo`
 
 ---
 
 ## Death Modes
 
-| Mode | Behavior | Best For |
+| Mode | What happens | Good for |
 |------|----------|----------|
-| **hybrid** (default) | Dead players enter spectator mode on Main for 5 minutes. Teammates must revive them during this window, or they're auto-transferred to Limbo. Disconnecting skips spectator and goes straight to Limbo. | Servers wanting tension and urgency |
-| **spectator** | Dead players stay on Main in spectator mode indefinitely until revived. Never auto-transfer to Limbo. | Servers preferring dead players to spectate constantly |
-| **limbo** | Dead players immediately transferred to Limbo upon losing all lives. | Hardcore servers enforcing strict separation |
+| **hybrid** (default) | Dead players chill in spectator on Main for 5 min. Team has that long or they get sent to Limbo. Log out = skip straight to Limbo. | Tension and urgency |
+| **spectator** | Dead players stay on Main as spectators forever until revived. | Dead people watching team 24/7 |
+| **limbo** | Dead = straight to Limbo. | Hardcore strict separation |
 
-All modes support reviving via ritual structures, Revive Skull, and `/revive` command.
+All work with ritual structures, Revive Skull, and `/revive`.
 
 ---
 
 ## Built-in Revival System
-*(Inspired by [Hardcore Revive Mod](https://modrinth.com/plugin/hardcore-revive-mod))*
+*(ripped from [Hardcore Revive Mod](https://modrinth.com/plugin/hardcore-revive-mod))*
 
 ### Player Head Drops
-On final death, the player's head drops at their death location with a death coordinates message.
+When you're fully dead, your head drops where you died with coords in chat.
 
-### Revival Ritual Structure
-Build a 3x3x3 beacon-style structure to revive dead players:
+### Revival Ritual
+Build a 3x3x3 beacon-ish thing:
 
 **Structure:**
-- **Bottom layer:** 4 Soul Sand corners, 4 Stair blocks at edges, 1 Ore block center
-- **Middle layer:** 4 Wither Roses on Soul Sand, 1 Fence on ore block
-- **Top:** Place dead player's head on the fence to trigger revival
+- **Bottom:** 4 Soul Sand corners, 4 Stairs at edges, 1 Ore in middle
+- **Middle:** 4 Wither Roses on Soul Sand, 1 Fence on ore
+- **Top:** Dead player's head on fence = revival
 
-The plugin auto-detects when the structure is completed and revives the player!
+Plugin auto-detects and revives them!
 
 ### Craftable Items
 
-**Revive Skull** - Right-click to open a menu of dead players and receive their head for the ritual.
+**Revive Skull** - right-click for a menu of dead players, get their head for rituals.
 
-**Crafting Recipe:**
+**Recipe:**
 ```
 Obsidian | Ghast Tear | Obsidian
 Totem    | Any Skull  | Totem
 Obsidian | Ghast Tear | Obsidian
 ```
 
-**Extra Life** - Right-click to gain +1 life (max cap applies). Recipe is fully customizable!
+**Extra Life** - right-click for +1 life (max cap applies). Recipe is fully customizable!
 
-**Default Recipe:**
+**Default:**
 ```
 Diamond Block  | Emerald Block | Diamond Block
 Netherite Ingot| Nether Star   | Netherite Ingot
 Gold Block     | Emerald Block | Gold Block
 ```
 
-### Head Wearing Effects
-Wearing a dead player's head grants **Speed II** and **Night Vision** - useful for carrying heads to revival structures!
+### Head Effects
+Wear a dead player's head = Speed II and Night Vision.
 
 ---
 
-## 📋 Requirements
+## Requirements
 
 - **Minecraft:** 1.21.X (Spigot, Paper, or Purpur)
 - **Proxy:** Velocity (BungeeCord/Waterfall untested)
 - **Database:** MySQL 5.7+ or MariaDB 10.2+
-- **Java:** 21 or higher
-- **Servers:** Two backend servers (Main + Limbo)
+- **Java:** 21+
+- **Servers:** Two backend (Main + Limbo)
 
-> ⚠️ **Important:** Do **NOT** enable `hardcore=true` in `server.properties`. Leave it as `false` - the plugin manages hardcore mechanics internally.
+> **Important:** Do NOT enable `hardcore=true` in `server.properties`. Keep it `false` - the plugin handles that.
 
 ---
 
@@ -144,27 +146,27 @@ Wearing a dead player's head grants **Speed II** and **Night Vision** - useful f
 
 **For BungeeCord/Waterfall:** Enable IP forwarding in `config.yml` and set `bungeecord: true` in `spigot.yml`
 
-> 📝 **Note:** Install PolarSouls ONLY on backend servers, NOT on the proxy!
+> **Note:** Install PolarSouls ONLY on backend servers, NOT on the proxy!
 
 ---
 
-## Configuration
+## Config
 
-See the generated `config.yml` for all options with detailed comments. Key settings:
+Check `config.yml` for everything. Key stuff:
 
 ```yaml
-# Server role (CRITICAL!)
+# server role (important!)
 is-limbo-server: false    # false on Main, true on Limbo
 
-# Lives settings
+# lives
 lives:
-  default: 2              # Starting lives
-  max-lives: 5            # Maximum cap
-  on-revive: 1            # Lives restored on revival
-  grace-period: "24h"     # New player protection
+  default: 2              # starting lives
+  max-lives: 5            # cap
+  on-revive: 1            # lives back on revival
+  grace-period: "24h"     # newbie protection
   revive-cooldown-seconds: 30
 
-# Death mode
+# death mode
 main:
   death-mode: "hybrid"    # hybrid | spectator | limbo
   hybrid-timeout-seconds: 300
@@ -250,11 +252,11 @@ All messages are customizable with Minecraft color codes!
 - Both servers MUST run the same PolarSouls version
 - Update both simultaneously
 
-**Need more help?** [Open an issue on GitHub](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) with:
-- PolarSouls version
-- Minecraft version
-- Proxy type
-- Console errors
+**Need more help?**
+- [Full Documentation Wiki](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/)
+- [Troubleshooting Guide](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/troubleshooting.html)
+- [FAQ](https://ssoggytacoblud.github.io/PolarSouls-for-Hardcore/faq.html)
+- [Open an issue](https://github.com/SSoggyTacoBlud/PolarSouls-for-Hardcore/issues) with your version, Minecraft version, proxy type, and console errors
 
 ---
 

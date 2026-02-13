@@ -326,10 +326,7 @@ public class DatabaseManager {
         return result;
     }
 
-    /**
-     * Retrieve the stored plugin version from a metadata table.
-     * Returns null if no version is stored yet (first run).
-     */
+    // gets plugin version from db, returns null if first time running
     public String getPluginVersion() {
         String metaTable = "polarsouls_meta";
         try (Connection conn = dataSource.getConnection()) {
@@ -349,9 +346,6 @@ public class DatabaseManager {
         return null;
     }
 
-    /**
-     * Save the current plugin version to the metadata table.
-     */
     public void savePluginVersion(String version) {
         String metaTable = "polarsouls_meta";
         try (Connection conn = dataSource.getConnection()) {
@@ -369,9 +363,6 @@ public class DatabaseManager {
         }
     }
 
-    /**
-     * Create the metadata table if it doesn't exist.
-     */
     private void createMetadataTableIfNeeded(Connection conn, String metaTable) throws SQLException {
         String createTableSql = "CREATE TABLE IF NOT EXISTS " + metaTable + " ("
                 + "key_ VARCHAR(50) PRIMARY KEY,"

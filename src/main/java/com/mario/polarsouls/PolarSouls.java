@@ -494,10 +494,7 @@ public final class PolarSouls extends JavaPlugin implements Listener {
         return hrmEnabled && hrmReviveSkullRecipe;
     }
 
-    /**
-     * Check version compatibility between Main and Limbo servers.
-     * Warns if they're running different versions.
-     */
+    // checks if main and limbo are running same version, warns if not
     private void checkVersionCompatibility() {
         String currentVersion = getDescription().getVersion();
         String storedVersion = databaseManager.getPluginVersion();
