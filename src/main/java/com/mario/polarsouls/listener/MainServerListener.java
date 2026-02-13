@@ -102,7 +102,6 @@ public class MainServerListener implements Listener {
                 if (!player.isOnline()) return;
                 if (player.getGameMode() != GameMode.SURVIVAL) {
                     plugin.debug(player.getName() + " returned alive, restoring to survival.");
-                    UUID uuid = player.getUniqueId();
                     grantReviveCooldown(uuid);
                     hybridWindowUsed.remove(uuid);
                     expectedGamemodeChanges.add(uuid);
