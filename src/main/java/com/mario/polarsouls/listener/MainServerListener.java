@@ -36,6 +36,7 @@ public class MainServerListener implements Listener {
     private final PolarSouls plugin;
     private final DatabaseManager db;
     private final Set<UUID> pendingLimbo = ConcurrentHashMap.newKeySet();
+    private final Set<UUID> pendingSurvivalRestore = ConcurrentHashMap.newKeySet();
     private final Set<UUID> expectedGamemodeChanges = new HashSet<>();
     private final Set<UUID> hybridWindowUsed = ConcurrentHashMap.newKeySet();
     private final Map<UUID, BukkitTask> hybridPendingTransfers = new HashMap<>();
@@ -178,6 +179,7 @@ public class MainServerListener implements Listener {
         Long cooldownExpiry = reviveCooldowns.get(uuid);
         if (cooldownExpiry != null && System.currentTimeMillis() < cooldownExpiry) {
             plugin.debug(player.getName() + " death ignored (revive cooldown active)");
+            pendingSurvivalRestore.add(uuid);
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (player.isOnline()) {
                     player.sendMessage(MessageUtil.get("death-cooldown"));
@@ -210,6 +212,7 @@ public class MainServerListener implements Listener {
 
         if (data.isInGracePeriod(plugin.getGracePeriodMillis())) {
             pendingLimbo.remove(uuid);
+            pendingSurvivalRestore.add(uuid);
             restoreIfAccidentalSpectator(player, uuid);
             notifyGracePeriod(player, data);
             return;
@@ -225,6 +228,7 @@ public class MainServerListener implements Listener {
             handleFinalDeath(player, uuid);
         } else {
             pendingLimbo.remove(uuid);
+            pendingSurvivalRestore.add(uuid);
             restoreIfAccidentalSpectator(player, uuid);
             notifyLifeLost(player, remainingLives);
         }
@@ -320,6 +324,20 @@ public class MainServerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+
+        // Handle protected deaths (grace period, revive cooldown, or lives remaining)
+        // Restore to survival since hardcore mode sets them to spectator on respawn
+        if (pendingSurvivalRestore.remove(uuid)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (player.isOnline() && player.getGameMode() != GameMode.SURVIVAL) {
+                    expectedGamemodeChanges.add(uuid);
+                    player.setGameMode(GameMode.SURVIVAL);
+                    cancelHybridTransfer(uuid);
+                    plugin.debug(player.getName() + " restored to survival after protected death.");
+                }
+            }, 1L);
+            return;
+        }
 
         // only handle players who died their final actual death
         if (!pendingLimbo.remove(uuid)) return;
