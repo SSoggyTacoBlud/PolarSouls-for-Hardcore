@@ -29,6 +29,11 @@ public class SetLivesCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("polarsouls.admin")) {
+            sender.sendMessage(MessageUtil.colorize("&cYou don't have permission to use this command."));
+            return true;
+        }
+
         if (args.length != 2) {
             sender.sendMessage(MessageUtil.colorize("&cUsage: /hlsetlives <player> <lives>"));
             return false;
