@@ -114,15 +114,9 @@ public class HeadDropListener implements Listener {
     // It's only called when a player is revived, not on every death
     // Performance: O(entities + chunks + players) - runs infrequently
     public static void removeDroppedHeads(UUID ownerUuid) {
-        // Limit search to reasonable bounds to avoid lag on massive servers
-        int maxEntitiesPerWorld = 10000; // Safety limit
-        
         for (World world : Bukkit.getWorlds()) {
-            int entityCount = 0;
-            
-            // Remove dropped item entities (with safety limit)
+            // Remove dropped item entities
             for (Item itemEntity : world.getEntitiesByClass(Item.class)) {
-                if (++entityCount > maxEntitiesPerWorld) break; // Safety limit to prevent lag on servers with many entities
                 if (isOwnedHead(itemEntity.getItemStack(), ownerUuid)) {
                     itemEntity.remove();
                 }

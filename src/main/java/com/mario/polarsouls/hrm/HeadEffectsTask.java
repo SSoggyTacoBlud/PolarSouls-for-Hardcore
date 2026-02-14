@@ -56,7 +56,9 @@ public class HeadEffectsTask extends BukkitRunnable {
                 }
             }
         }
-        // Removed unnecessary cleanup loop - players are removed on quit event
+
+        // Clean up disconnected players from tracking set
+        wearingHead.removeIf(uuid -> Bukkit.getPlayer(uuid) == null);
     }
 
     private static boolean isWearingPlayerHead(Player player) {
@@ -76,13 +78,5 @@ public class HeadEffectsTask extends BukkitRunnable {
         player.removePotionEffect(PotionEffectType.SLOWNESS);
         player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
         player.removePotionEffect(PotionEffectType.RESISTANCE);
-    }
-
-    /**
-     * Removes a player from the tracking set when they quit
-     * This avoids the need for a cleanup loop in the main task
-     */
-    public void onPlayerQuit(UUID uuid) {
-        wearingHead.remove(uuid);
     }
 }
