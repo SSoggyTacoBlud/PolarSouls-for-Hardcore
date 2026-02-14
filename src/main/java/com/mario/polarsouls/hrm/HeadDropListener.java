@@ -64,24 +64,32 @@ public class HeadDropListener implements Listener {
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
                 PlayerData data = db.getPlayer(player.getUniqueId());
                 if (data == null) {
-                    plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (no data).");
+                    if (plugin.isDebugMode()) {
+                        plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (no data).");
+                    }
                     return;
                 }
                 if (!data.isDead()) {
-                    plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (not dead).");
+                    if (plugin.isDebugMode()) {
+                        plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (not dead).");
+                    }
                     return;
                 }
                 if (data.isInGracePeriod(plugin.getGracePeriodMillis())) {
-                    plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (grace period).");
+                    if (plugin.isDebugMode()) {
+                        plugin.debug(SKIP_HEAD_DROP_MSG + player.getName() + " (grace period).");
+                    }
                     return;
                 }
                 // Drop head on main thread
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     ItemStack head = createPlayerHead(player);
                     world.dropItemNaturally(deathLoc, head);
-                    plugin.debug("Dropped " + player.getName() + "'s head at "
-                            + deathLoc.getBlockX() + ", " + deathLoc.getBlockY()
-                            + ", " + deathLoc.getBlockZ());
+                    if (plugin.isDebugMode()) {
+                        plugin.debug("Dropped " + player.getName() + "'s head at "
+                                + deathLoc.getBlockX() + ", " + deathLoc.getBlockY()
+                                + ", " + deathLoc.getBlockZ());
+                    }
                 });
             }, 10L); // 0.5s delay because idfk it feels good
         }

@@ -33,7 +33,9 @@ public class LimboServerListener implements Listener {
         Player player = event.getPlayer();
 
         if (player.hasPermission(PERM_BYPASS)) {
-            plugin.debug(player.getName() + " has bypass, skipping limbo lockdown.");
+            if (plugin.isDebugMode()) {
+                plugin.debug(player.getName() + " has bypass, skipping limbo lockdown.");
+            }
             return;
         }
 
@@ -47,7 +49,9 @@ public class LimboServerListener implements Listener {
                     plugin.getLimboDeadPlayers().add(player.getUniqueId());
                     applyLimboState(player);
                 } else {
-                    plugin.debug(player.getName() + " is alive, visiting Limbo.");
+                    if (plugin.isDebugMode()) {
+                        plugin.debug(player.getName() + " is alive, visiting Limbo.");
+                    }
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendMessage(MessageUtil.get("limbo-visitor-welcome"));
                 }
@@ -85,7 +89,10 @@ public class LimboServerListener implements Listener {
         }
 
         player.sendMessage(MessageUtil.getNoPrefix("limbo-welcome"));
-        plugin.debug("Applied limbo state to " + player.getName());
+        
+        if (plugin.isDebugMode()) {
+            plugin.debug("Applied limbo state to " + player.getName());
+        }
     }
 
     private static Location findSafeLocation(Location loc) {

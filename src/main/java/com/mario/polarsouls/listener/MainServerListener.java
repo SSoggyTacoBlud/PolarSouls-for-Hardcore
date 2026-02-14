@@ -50,7 +50,9 @@ public class MainServerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPermission(PERM_BYPASS)) {
-            plugin.debug(player.getName() + " has bypass permission, skipping checks.");
+            if (plugin.isDebugMode()) {
+                plugin.debug(player.getName() + " has bypass permission, skipping checks.");
+            }
             return;
         }
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> handleJoinAsync(player));
@@ -101,7 +103,9 @@ public class MainServerListener implements Listener {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (!player.isOnline()) return;
                 if (player.getGameMode() != GameMode.SURVIVAL) {
-                    plugin.debug(player.getName() + " returned alive, restoring to survival.");
+                    if (plugin.isDebugMode()) {
+                        plugin.debug(player.getName() + " returned alive, restoring to survival.");
+                    }
                     grantReviveCooldown(uuid);
                     hybridWindowUsed.remove(uuid);
                     expectedGamemodeChanges.add(uuid);
@@ -118,7 +122,10 @@ public class MainServerListener implements Listener {
         PlayerData data = PlayerData.createNew(player.getUniqueId(), player.getName(),
                 plugin.getDefaultLives(), plugin.getGracePeriodMillis());
         db.savePlayer(data);
-        plugin.debug("Created new player record for " + player.getName());
+        
+        if (plugin.isDebugMode()) {
+            plugin.debug("Created new player record for " + player.getName());
+        }
 
         if (data.getGraceUntil() > 0) {
             final PlayerData finalData = data;
@@ -177,7 +184,9 @@ public class MainServerListener implements Listener {
         // Skip if still in post-revive immunity
         Long cooldownExpiry = reviveCooldowns.get(uuid);
         if (cooldownExpiry != null && System.currentTimeMillis() < cooldownExpiry) {
-            plugin.debug(player.getName() + " death ignored (revive cooldown active)");
+            if (plugin.isDebugMode()) {
+                plugin.debug(player.getName() + " death ignored (revive cooldown active)");
+            }
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (player.isOnline()) {
                     player.sendMessage(MessageUtil.get("death-cooldown"));
@@ -217,8 +226,11 @@ public class MainServerListener implements Listener {
 
         int remainingLives = data.decrementLife();
         db.savePlayer(data);
-        plugin.debug(player.getName() + " died. Lives remaining: " + remainingLives
-                + ", isDead: " + data.isDead());
+        
+        if (plugin.isDebugMode()) {
+            plugin.debug(player.getName() + " died. Lives remaining: " + remainingLives
+                    + ", isDead: " + data.isDead());
+        }
 
         if (data.isDead()) {
             // UUID stays in pendingLimbo
