@@ -2,6 +2,7 @@ package com.mario.polarsouls.task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -27,34 +28,37 @@ public class MainReviveCheckTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        List<UUID> spectators = collectDeadSpectators();
+        // Batch query all dead player UUIDs from database (optimization: single query instead of N queries)
+        Set<UUID> deadPlayerUUIDs = plugin.getDatabaseManager().getDeadPlayerUUIDs();
+
+        List<UUID> spectators = collectSpectators();
         if (spectators.isEmpty()) return;
 
         plugin.debug("Main revive check: scanning " + spectators.size() + " spectator(s)...");
 
-        List<UUID> revived = findRevivedPlayers(spectators);
+        List<UUID> revived = findRevivedPlayers(spectators, deadPlayerUUIDs);
 
         if (!revived.isEmpty()) {
             Bukkit.getScheduler().runTask(plugin, () -> restoreAll(revived));
         }
     }
 
-    private List<UUID> collectDeadSpectators() {
-        List<UUID> deadSpectatorUuids = new ArrayList<>();
+    private List<UUID> collectSpectators() {
+        List<UUID> spectatorUuids = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getGameMode() == GameMode.SPECTATOR
-                    && !player.hasPermission(PERM_BYPASS)
-                    && plugin.getDatabaseManager().isPlayerDead(player.getUniqueId())) {
-                deadSpectatorUuids.add(player.getUniqueId());
+                    && !player.hasPermission(PERM_BYPASS)) {
+                spectatorUuids.add(player.getUniqueId());
             }
         }
-        return deadSpectatorUuids;
+        return spectatorUuids;
     }
 
-    private List<UUID> findRevivedPlayers(List<UUID> spectators) {
+    private List<UUID> findRevivedPlayers(List<UUID> spectators, Set<UUID> deadPlayerUUIDs) {
         List<UUID> revived = new ArrayList<>();
         for (UUID uuid : spectators) {
-            if (!plugin.getDatabaseManager().isPlayerDead(uuid)) {
+            // If spectator is NOT in the dead players set, they've been revived
+            if (!deadPlayerUUIDs.contains(uuid)) {
                 revived.add(uuid);
                 plugin.debug("Spectator " + uuid + " is no longer dead in DB, restoring...");
             }

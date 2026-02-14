@@ -36,9 +36,9 @@ public class MainServerListener implements Listener {
     private final PolarSouls plugin;
     private final DatabaseManager db;
     private final Set<UUID> pendingLimbo = ConcurrentHashMap.newKeySet();
-    private final Set<UUID> expectedGamemodeChanges = new HashSet<>();
+    private final Set<UUID> expectedGamemodeChanges = ConcurrentHashMap.newKeySet();
     private final Set<UUID> hybridWindowUsed = ConcurrentHashMap.newKeySet();
-    private final Map<UUID, BukkitTask> hybridPendingTransfers = new HashMap<>();
+    private final Map<UUID, BukkitTask> hybridPendingTransfers = new ConcurrentHashMap<>();
     private final Map<UUID, Long> reviveCooldowns = new ConcurrentHashMap<>();
 
     public MainServerListener(PolarSouls plugin) {

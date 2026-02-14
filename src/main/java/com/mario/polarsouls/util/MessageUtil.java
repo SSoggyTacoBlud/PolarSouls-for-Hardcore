@@ -29,12 +29,23 @@ public final class MessageUtil {
     public static String getRaw(String key, Object... replacements) {
         String messageContent = messages.getOrDefault(key, "&cMissing message: " + key);
 
+        // Optimized: use StringBuilder for multiple replacements to avoid creating intermediate strings
+        if (replacements.length == 0) {
+            return messageContent;
+        }
+
+        StringBuilder result = new StringBuilder(messageContent);
         for (int i = 0; i < replacements.length - 1; i += 2) {
             String placeholder = "%" + replacements[i] + "%";
             String value = String.valueOf(replacements[i + 1]);
-            messageContent = messageContent.replace(placeholder, value);
+
+            int index = 0;
+            while ((index = result.indexOf(placeholder, index)) != -1) {
+                result.replace(index, index + placeholder.length(), value);
+                index += value.length();
+            }
         }
-        return messageContent;
+        return result.toString();
     }
 
     public static String get(String key, Object... replacements) {

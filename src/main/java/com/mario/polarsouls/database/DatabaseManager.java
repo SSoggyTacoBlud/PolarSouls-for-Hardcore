@@ -229,6 +229,33 @@ public class DatabaseManager {
         return true;
     }
 
+    /**
+     * Efficiently batch-query death status for multiple players.
+     * This eliminates N+1 query problems when checking many players.
+     *
+     * @return Set of UUIDs that are marked as dead in the database
+     */
+    public java.util.Set<UUID> getDeadPlayerUUIDs() {
+        String sql = "SELECT uuid FROM " + tableName + " WHERE is_dead = TRUE";
+        java.util.Set<UUID> deadUUIDs = new java.util.HashSet<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                try {
+                    deadUUIDs.add(UUID.fromString(rs.getString("uuid")));
+                } catch (IllegalArgumentException e) {
+                    plugin.getLogger().log(Level.WARNING, () -> "Invalid UUID in database: " + rs.getString("uuid"));
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, () -> "Failed to batch query dead players");
+        }
+        return deadUUIDs;
+    }
+
     public boolean revivePlayer(UUID uuid, int livesToRestore) {
         String sql = UPDATE + tableName
                 + " SET is_dead = FALSE, lives = ? WHERE uuid = ? AND is_dead = TRUE";
