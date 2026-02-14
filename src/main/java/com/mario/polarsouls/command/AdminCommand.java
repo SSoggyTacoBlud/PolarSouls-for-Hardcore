@@ -49,7 +49,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     private static final List<String> CONFIRM_ACTIONS = Arrays.asList("overwrite", "stack", "cancel");
 
     private final PolarSouls plugin;
-    private final DatabaseManager db;
+    private final DatabaseManager databaseManager;
 
     // Tracks pending grace confirmation per admin sender name
     private final Map<String, PendingGrace> pendingGraceConfirmations = new ConcurrentHashMap<>();
@@ -59,7 +59,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     public AdminCommand(PolarSouls plugin) {
         this.plugin = plugin;
-        this.db = plugin.getDatabaseManager();
+        this.databaseManager = plugin.getDatabaseManager();
     }
 
     @Override
@@ -110,33 +110,33 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void executeLivesChange(CommandSender sender, String targetName,
                                      String action, int amount) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
-        int newLives = computeNewLives(data.getLives(), action, amount);
+        int newLives = computeNewLives(playerData.getLives(), action, amount);
         int maxLives = plugin.getMaxLives();
         if (maxLives > 0 && newLives > maxLives) {
             newLives = maxLives;
         }
 
-        db.setLives(data.getUuid(), newLives);
+        databaseManager.setLives(playerData.getUuid(), newLives);
 
         plugin.getLogger().log(Level.INFO, "{0} {1} lives for {2}: now {3}",
-                new Object[]{sender.getName(), action, data.getUsername(), newLives});
+                new Object[]{sender.getName(), action, playerData.getUsername(), newLives});
 
         sender.sendMessage(MessageUtil.get("admin-lives-updated",
-                KEY_PLAYER, data.getUsername(),
+                KEY_PLAYER, playerData.getUsername(),
                 KEY_ACTION, action,
                 KEY_LIVES, newLives));
 
         if (newLives <= 0) {
             sender.sendMessage(MessageUtil.colorize(
-                    "&c" + data.getUsername() + " is now dead (0 lives)."));
-        } else if (data.isDead()) {
-            restoreOnlineSpectator(data);
+                    "&c" + playerData.getUsername() + " is now dead (0 lives)."));
+        } else if (playerData.isDead()) {
+            restoreOnlineSpectator(playerData);
         }
     }
 
@@ -164,25 +164,25 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void executeGraceChange(CommandSender sender, String[] args,
                                      String targetName, String action) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
         if ("remove".equals(action)) {
-            if (data.getGraceUntil() <= 0 || data.getGraceUntil() <= System.currentTimeMillis()) {
+            if (playerData.getGraceUntil() <= 0 || playerData.getGraceUntil() <= System.currentTimeMillis()) {
                 sender.sendMessage(MessageUtil.colorize(
-                        "&e" + data.getUsername() + " &7does not have an active grace period."));
+                        "&e" + playerData.getUsername() + " &7does not have an active grace period."));
                 return;
             }
-            db.setGraceUntil(data.getUuid(), 0L);
+            databaseManager.setGraceUntil(playerData.getUuid(), 0L);
             plugin.getLogger().log(Level.INFO, "{0} removed grace period for {1}",
-                    new Object[]{sender.getName(), data.getUsername()});
+                    new Object[]{sender.getName(), playerData.getUsername()});
             sender.sendMessage(MessageUtil.get("admin-grace-removed",
-                    KEY_PLAYER, data.getUsername()));
+                    KEY_PLAYER, playerData.getUsername()));
         } else {
-            applyGraceSet(sender, args, data);
+            applyGraceSet(sender, args, playerData);
         }
     }
 
@@ -218,7 +218,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
         // No existing grace — apply directly
         long graceUntil = now + millis;
-        db.setGraceUntil(data.getUuid(), graceUntil);
+        databaseManager.setGraceUntil(data.getUuid(), graceUntil);
 
         String formattedTime = TimeUtil.formatTime(millis);
         plugin.getLogger().log(Level.INFO, "{0} set grace period for {1} ({2})",
@@ -281,7 +281,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         switch (choice) {
             case "overwrite" -> {
                 long graceUntil = now + pending.requestedMillis();
-                db.setGraceUntil(pending.targetUuid(), graceUntil);
+                databaseManager.setGraceUntil(pending.targetUuid(), graceUntil);
 
                 String formattedTime = TimeUtil.formatTime(pending.requestedMillis());
                 plugin.getLogger().log(Level.INFO, "{0} overwrote grace period for {1} ({2})",
@@ -294,7 +294,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 // If existing grace expired, stack from now; otherwise add to existing end time
                 long baseTime = Math.max(pending.existingGraceUntil(), now);
                 long graceUntil = baseTime + pending.requestedMillis();
-                db.setGraceUntil(pending.targetUuid(), graceUntil);
+                databaseManager.setGraceUntil(pending.targetUuid(), graceUntil);
 
                 String totalRemaining = TimeUtil.formatTime(graceUntil - now);
                 plugin.getLogger().log(Level.INFO, "{0} stacked grace period for {1} (total: {2})",
@@ -326,26 +326,26 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void executeKill(CommandSender sender, String targetName) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
-        if (data.isDead()) {
+        if (playerData.isDead()) {
             sender.sendMessage(MessageUtil.colorize(
-                    "&c" + data.getUsername() + " is already dead."));
+                    "&c" + playerData.getUsername() + " is already dead."));
             return;
         }
 
-        db.setLives(data.getUuid(), 0);
+        databaseManager.setLives(playerData.getUuid(), 0);
 
         plugin.getLogger().log(Level.INFO, "{0} force-killed {1}",
-                new Object[]{sender.getName(), data.getUsername()});
+                new Object[]{sender.getName(), playerData.getUsername()});
         sender.sendMessage(MessageUtil.get("admin-killed",
-                KEY_PLAYER, data.getUsername()));
+                KEY_PLAYER, playerData.getUsername()));
 
-        Player target = Bukkit.getPlayer(data.getUuid());
+        Player target = Bukkit.getPlayer(playerData.getUuid());
         if (target != null && target.isOnline()) {
             Bukkit.getScheduler().runTask(plugin, () ->
                     applyDeathTransition(target));
@@ -401,33 +401,33 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void executeRevive(CommandSender sender, String targetName, int livesToRestore) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
-        if (!data.isDead()) {
+        if (!playerData.isDead()) {
             sender.sendMessage(MessageUtil.get("revive-not-dead",
-                    KEY_PLAYER, data.getUsername()));
+                    KEY_PLAYER, playerData.getUsername()));
             return;
         }
 
-        boolean success = db.revivePlayer(data.getUuid(), livesToRestore);
+        boolean success = databaseManager.revivePlayer(playerData.getUuid(), livesToRestore);
         if (success) {
             plugin.getLogger().log(Level.INFO, "{0} revived {1} (lives: {2})",
-                    new Object[]{sender.getName(), data.getUsername(), livesToRestore});
+                    new Object[]{sender.getName(), playerData.getUsername(), livesToRestore});
             sender.sendMessage(MessageUtil.get("revive-admin-success",
-                    KEY_PLAYER, data.getUsername(),
+                    KEY_PLAYER, playerData.getUsername(),
                     KEY_LIVES, livesToRestore));
-            restoreOnlineSpectator(data);
+            restoreOnlineSpectator(playerData);
 
             // Remove any dropped player head items from all worlds
             Bukkit.getScheduler().runTask(plugin, () ->
-                    HeadDropListener.removeDroppedHeads(data.getUuid()));
+                    HeadDropListener.removeDroppedHeads(playerData.getUuid()));
         } else {
             sender.sendMessage(MessageUtil.colorize(
-                    "&cFailed to revive " + data.getUsername()));
+                    "&cFailed to revive " + playerData.getUsername()));
         }
     }
 
@@ -443,24 +443,24 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void executeReset(CommandSender sender, String targetName) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
         int defaultLives = plugin.getDefaultLives();
-        PlayerData fresh = PlayerData.createNew(data.getUuid(), data.getUsername(),
+        PlayerData fresh = PlayerData.createNew(playerData.getUuid(), playerData.getUsername(),
                 defaultLives, plugin.getGracePeriodMillis());
-        db.savePlayer(fresh);
+        databaseManager.savePlayer(fresh);
 
         plugin.getLogger().log(Level.INFO, "{0} reset {1} to defaults ({2} lives)",
-                new Object[]{sender.getName(), data.getUsername(), defaultLives});
+                new Object[]{sender.getName(), playerData.getUsername(), defaultLives});
         sender.sendMessage(MessageUtil.get("admin-reset",
-                KEY_PLAYER, data.getUsername(),
+                KEY_PLAYER, playerData.getUsername(),
                 KEY_LIVES, defaultLives));
 
-        restoreOnlineSpectator(data);
+        restoreOnlineSpectator(playerData);
     }
 
     private void handleInfo(CommandSender sender, String[] args) {
@@ -475,14 +475,14 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void executeInfo(CommandSender sender, String targetName) {
-        PlayerData data = db.getPlayerByName(targetName);
-        if (data == null) {
+        PlayerData playerData = databaseManager.getPlayerByName(targetName);
+        if (playerData == null) {
             notFound(sender, targetName);
             return;
         }
 
-        sendInfoHeader(sender, data);
-        sendInfoDetails(sender, data);
+        sendInfoHeader(sender, playerData);
+        sendInfoDetails(sender, playerData);
         sender.sendMessage(MessageUtil.colorize("&6&l═══════════════"));
     }
 
