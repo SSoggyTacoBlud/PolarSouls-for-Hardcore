@@ -28,8 +28,11 @@ import com.mario.polarsouls.PolarSouls;
 import com.mario.polarsouls.database.DatabaseManager;
 import com.mario.polarsouls.hrm.HeadDropListener;
 import com.mario.polarsouls.model.PlayerData;
+import com.mario.polarsouls.util.CommandUtil;
 import com.mario.polarsouls.util.MessageUtil;
+import com.mario.polarsouls.util.PlayerRevivalUtil;
 import com.mario.polarsouls.util.ServerTransferUtil;
+import com.mario.polarsouls.util.TabCompleteUtil;
 import com.mario.polarsouls.util.TimeUtil;
 
 public class AdminCommand implements CommandExecutor, TabCompleter {
@@ -64,8 +67,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("polarsouls.admin")) {
-            sender.sendMessage(MessageUtil.colorize("&cYou don't have permission to use this command."));
+        if (!CommandUtil.checkPermission(sender, "polarsouls.admin")) {
             return true;
         }
 
@@ -564,25 +566,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void restoreOnlineSpectator(PlayerData data) {
-        Player target = Bukkit.getPlayer(data.getUuid());
-        if (target != null && target.isOnline()
-                && target.getGameMode() != GameMode.SURVIVAL) {
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                if (target.isOnline()) {
-                    plugin.getLimboDeadPlayers().remove(target.getUniqueId());
-                    target.setGameMode(GameMode.SURVIVAL);
-                    target.sendMessage(MessageUtil.get("revive-success"));
-
-                    if (plugin.isLimboServer()) {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                            if (target.isOnline()) {
-                                ServerTransferUtil.sendToMain(target);
-                            }
-                        }, 40L);
-                    }
-                }
-            });
-        }
+        PlayerRevivalUtil.restoreOnlineSpectator(plugin, data);
     }
 
     private static String formatTimestamp(long millis) {
@@ -636,24 +620,10 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private static List<String> filterStartsWith(List<String> options, String prefix) {
-        List<String> result = new ArrayList<>();
-        String lower = prefix.toLowerCase();
-        for (String option : options) {
-            if (option.toLowerCase().startsWith(lower)) {
-                result.add(option);
-            }
-        }
-        return result;
+        return TabCompleteUtil.filterStartsWith(options, prefix);
     }
 
     private static List<String> playerNames(String prefix) {
-        List<String> names = new ArrayList<>();
-        String lower = prefix.toLowerCase();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().toLowerCase().startsWith(lower)) {
-                names.add(player.getName());
-            }
-        }
-        return names;
+        return TabCompleteUtil.getOnlinePlayerNames(prefix);
     }
 }
