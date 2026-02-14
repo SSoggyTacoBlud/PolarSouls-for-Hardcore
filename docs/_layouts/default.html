@@ -108,15 +108,11 @@
             event.stopPropagation();
             sidebar.classList.toggle('collapsed');
             
-            // Update button icon and position
+            // Update button icon
             if (sidebar.classList.contains('collapsed')) {
               collapseBtn.textContent = '▶';
-              collapseBtn.style.left = '1rem';
-              collapseBtn.style.right = 'auto';
             } else {
               collapseBtn.textContent = '◀';
-              collapseBtn.style.left = 'auto';
-              collapseBtn.style.right = '-15px';
             }
           });
         }

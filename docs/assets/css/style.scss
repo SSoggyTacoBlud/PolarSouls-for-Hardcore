@@ -541,7 +541,7 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   cursor: pointer;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   color: white;
@@ -557,6 +557,11 @@ body {
 
 .sidebar.collapsed {
   transform: translateX(-100%);
+}
+
+.sidebar.collapsed .sidebar-collapse-btn {
+  left: 1rem;
+  right: auto;
 }
 
 .sidebar.collapsed ~ .main-wrapper {
@@ -612,11 +617,6 @@ body.dark-mode .main-content table tbody tr:hover {
 @media screen and (min-width: 1025px) {
   .sidebar-collapse-btn {
     display: flex;
-  }
-  
-  .sidebar.collapsed + .sidebar-collapse-btn {
-    left: 1rem;
-    right: auto;
   }
 }
 
