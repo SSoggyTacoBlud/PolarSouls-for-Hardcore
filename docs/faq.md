@@ -339,9 +339,9 @@ psadmin grace PlayerName 48
 
 ```yaml
 messages:
-  prefix: "&8[&4☠&8] &r"
+  prefix: "&8[&4DEATH&8] &r"
   death-life-lost: "&cYou lost a life! &7Remaining: &e%lives%"
-  death-last-life: "&c&l⚠ FINAL WARNING!"
+  death-last-life: "&c&l! FINAL WARNING!"
   # ... many more
 ```
 

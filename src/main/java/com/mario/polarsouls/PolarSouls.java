@@ -152,7 +152,7 @@ public final class PolarSouls extends JavaPlugin implements Listener {
         getLogger().log(Level.INFO, "║   Version: {0}║", String.format("%-47s", version));
         getLogger().log(Level.INFO, "║   Mode:    {0}║", String.format("%-47s", mode));
         getLogger().info(BORDER_EMPTY);
-        getLogger().info("║   ☠ Hardcore Lives • Limbo Exile • Revive System ☠      ║");
+        getLogger().info("║   Hardcore Lives • Limbo Exile • Revive System           ║");
         getLogger().info(BORDER_EMPTY);
         getLogger().info(BORDER_BOTTOM);
         getLogger().info("");
@@ -529,7 +529,7 @@ public final class PolarSouls extends JavaPlugin implements Listener {
 
         if (!currentVersion.equals(storedVersion)) {
             getLogger().warning("╔════════════════════════════════════════╗");
-            getLogger().warning("║  ⚠️  VERSION MISMATCH DETECTED!       ║");
+            getLogger().warning("║  !  VERSION MISMATCH DETECTED!        ║");
             getLogger().warning("╠════════════════════════════════════════╣");
             getLogger().log(Level.WARNING, "║ Current: {0}", currentVersion);
             getLogger().log(Level.WARNING, "║ Database: {0}", storedVersion);

@@ -427,10 +427,10 @@ All messages support Minecraft color codes (`&a`, `&c`, `&l`, etc.):
 
 ```yaml
 messages:
-  prefix: "&8[&4☠&8] &r"
+  prefix: "&8[&4DEATH&8] &r"
   death-life-lost: "&cYou lost a life! &7Remaining: &e%lives%"
-  death-last-life: "&c&l⚠ FINAL WARNING! &cYou are on your last life. Be careful!"
-  revive-success: "&a&l✦ REVIVED! &aReturning to the world of the living..."
+  death-last-life: "&c&l! FINAL WARNING! &cYou are on your last life. Be careful!"
+  revive-success: "&a&l+ REVIVED! &aReturning to the world of the living..."
   # ... many more customizable messages
 ```
 
