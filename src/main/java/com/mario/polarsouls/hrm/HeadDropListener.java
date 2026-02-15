@@ -113,7 +113,7 @@ public class HeadDropListener implements Listener {
     // Note: This is an expensive operation but necessary for game mechanics
     // It's only called when a player is revived, not on every death
     // Performance: O(entities + chunks + players) - runs infrequently
-    public static void removeDroppedHeads(PolarSouls plugin, UUID ownerUuid) {
+    public static void removeDroppedHeads(UUID ownerUuid) {
         for (World world : Bukkit.getWorlds()) {
             // Remove dropped item entities
             for (Item itemEntity : world.getEntitiesByClass(Item.class)) {
