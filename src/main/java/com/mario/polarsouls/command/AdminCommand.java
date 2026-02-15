@@ -208,7 +208,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         // Issue #21: Check if grace is already active and prompt for confirmation
         if (data.getGraceUntil() > now) {
             String remaining = data.getGraceTimeRemaining(plugin.getGracePeriodMillis());
-            pendingGraceConfirmations.put(sender.getName(),
+            String confirmationKey = sender.getClass().getName() + ":" + sender.getName();
+            pendingGraceConfirmations.put(confirmationKey,
                     new PendingGrace(data.getUuid(), data.getUsername(), millis, data.getGraceUntil()));
 
             sender.sendMessage(MessageUtil.colorize(
