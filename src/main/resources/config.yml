@@ -289,7 +289,7 @@ extra-life:
   
   # Crafting recipe for extra life item
   # Pattern: 3x3 grid (row1, row2, row3)
-  # Special symbols: "N" = ingredient at center, "G"/"E" = other ingredients
+  # Special symbols: "N" = ingredient at center, "G"/"E"/"D"/"I" = other ingredients (see rows and ingredients below)
   # [CONFIG] BOTH
   recipe:
     row1: "DED" # D = Diamond Block (sides), E = Emerald Block (center)              
