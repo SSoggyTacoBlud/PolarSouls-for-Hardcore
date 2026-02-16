@@ -312,23 +312,23 @@ extra-life:
 # ───────────────────────────────────────────────────────────────────────────────
 messages:
   # Prefix added to all plugin messages
-  prefix: "&8[&4DEATH&8] &r"
+  prefix: "&8[&4☠&8] &r"
 
   # --- Death Messages ---
   # Sent when player loses a life but still has lives remaining
   death-life-lost: "&cYou lost a life! &7Remaining: &e%lives%"
   
   # Sent when player loses their final life (warning!)
-  death-last-life: "&c&l! FINAL WARNING! &cYou are on your last life. Be careful!"
+  death-last-life: "&c&l⚠ FINAL WARNING! &cYou are on your last life. Be careful!"
   
   # Sent in LIMBO mode when all lives lost - player goes to Limbo immediately
-  death-sent-to-limbo: "&4&lX YOU HAVE FALLEN X\n&cAll lives lost. Entering Limbo..."
+  death-sent-to-limbo: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Entering Limbo..."
   
   # Sent in SPECTATOR mode when all lives lost - player stays as spectator
-  death-now-spectator: "&4&lX YOU HAVE FALLEN X\n&cAll lives lost. You are now a spectator.\n&7Wait for teammates to revive you."
+  death-now-spectator: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. You are now a spectator.\n&7Wait for teammates to revive you."
   
   # Sent in HYBRID mode - player has limited time before Limbo
-  death-hybrid-warning: "&4&lX YOU HAVE FALLEN X\n&cAll lives lost. Spectating for &e%timeout%&c.\n&7Your team must revive you before Limbo!"
+  death-hybrid-warning: "&4&l☠ YOU HAVE FALLEN ☠\n&cAll lives lost. Spectating for &e%timeout%&c.\n&7Your team must revive you before Limbo!"
   
   # Sent when player dies during grace period (protected from death)
   death-grace-period: "&aGrace period active! &7No life lost. &e%time_remaining% &7remaining."
@@ -338,7 +338,7 @@ messages:
 
   # --- Limbo Messages ---
   # Welcome message shown when player enters Limbo
-  limbo-welcome: "&4&l═══════════════════\n&c&l    X L I M B O X\n&4&l═══════════════════\n&7You are dead. Your teammates can\n&7revive you using the &erevival ritual&7,\n&7an admin with &e/psadmin revive <player>&7. \n&7You will be sent back automatically.\n&4&l═══════════════════"
+  limbo-welcome: "&4&l═══════════════════\n&c&l    ☠ L I M B O ☠\n&4&l═══════════════════\n&7You are dead. Your teammates can\n&7revive you using the &erevival ritual&7,\n&7an admin with &e/psadmin revive <player>&7. \n&7You will be sent back automatically.\n&4&l═══════════════════"
   
   # Message sent to dead player trying to leave Limbo
   limbo-cannot-leave: "&cYou are trapped in Limbo. Only revival can free you."
@@ -357,7 +357,7 @@ messages:
 
   # --- Revival Messages ---
   # Sent to revived player (returned to Main)
-  revive-success: "&a&l+ REVIVED! &aReturning to the world of the living..."
+  revive-success: "&a&l✦ REVIVED! &aReturning to the world of the living..."
   
   # Sent to admins when they use /psadmin revive <player>
   revive-admin-success: "&a%player% &7has been revived. &aLives: %lives%"
@@ -392,7 +392,7 @@ messages:
   reload-success: "&aConfiguration reloaded."
 
   # --- Extra Life Messages ---
-  extra-life-used: "&a&l+ +1 LIFE! &aYou now have &e%lives% &alives."
+  extra-life-used: "&a&l✦ +1 LIFE! &aYou now have &e%lives% &alives."
   extra-life-max: "&cYou already have the maximum number of lives (%max%)."
   extra-life-dead: "&cYou can't use this while dead."
 

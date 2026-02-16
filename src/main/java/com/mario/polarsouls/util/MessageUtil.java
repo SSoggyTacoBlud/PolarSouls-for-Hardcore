@@ -9,13 +9,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public final class MessageUtil {
 
-    private static String prefix = "&8[&4DEATH&8] &r";
+    private static String prefix = "&8[&4☠&8] &r";
     private static final Map<String, String> messages = new HashMap<>();
 
     private MessageUtil() {}
 
     public static void loadMessages(FileConfiguration config) {
-        prefix = config.getString("messages.prefix", "&8[&4DEATH&8] &r");
+        prefix = config.getString("messages.prefix", "&8[&4☠&8] &r");
 
         ConfigurationSection section = config.getConfigurationSection("messages");
         if (section != null) {
