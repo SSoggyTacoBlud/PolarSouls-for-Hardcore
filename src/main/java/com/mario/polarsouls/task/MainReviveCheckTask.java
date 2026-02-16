@@ -46,9 +46,12 @@ public class MainReviveCheckTask extends BukkitRunnable {
         List<UUID> deadSpectatorUuids = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getGameMode() == GameMode.SPECTATOR
-                    && !player.hasPermission(PERM_BYPASS)
-                    && plugin.getDatabaseManager().isPlayerDead(player.getUniqueId())) {
-                deadSpectatorUuids.add(player.getUniqueId());
+                    && !player.hasPermission(PERM_BYPASS)) {
+                UUID uuid = player.getUniqueId();
+                // Check the database (with its internal cache) to determine if the player is dead
+                if (plugin.getDatabaseManager().isPlayerDead(uuid)) {
+                    deadSpectatorUuids.add(uuid);
+                }
             }
         }
         return deadSpectatorUuids;
