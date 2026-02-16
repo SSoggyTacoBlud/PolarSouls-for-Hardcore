@@ -358,6 +358,16 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Manually invalidate the death status cache for a player.
+     * This should be called if death status changes through non-standard means
+     * (e.g., direct database manipulation, external tools, etc.).
+     * Note: savePlayer(), revivePlayer(), and setLives() already invalidate the cache.
+     */
+    public void invalidateDeathStatusCache(UUID uuid) {
+        deathStatusCache.remove(uuid);
+    }
+
     public List<PlayerData> getDeadPlayers() {
         String sql = SELECT_ALL + tableName + " WHERE is_dead = TRUE ORDER BY username";
 

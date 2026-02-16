@@ -58,11 +58,32 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     private final Map<String, PendingGrace> pendingGraceConfirmations = new ConcurrentHashMap<>();
 
     // stores pending grace confirmations so we can ask before overwriting
-    private record PendingGrace(UUID targetUuid, String targetName, long requestedMillis, long existingGraceUntil) {}
+    // createdAt is used for TTL cleanup
+    private record PendingGrace(UUID targetUuid, String targetName, long requestedMillis, long existingGraceUntil, long createdAt) {}
 
     public AdminCommand(PolarSouls plugin) {
         this.plugin = plugin;
         this.databaseManager = plugin.getDatabaseManager();
+        // Periodically clean up stale pending confirmations (every 5 minutes)
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::cleanupStalePendingConfirmations, 6000L, 6000L);
+    }
+
+    /**
+     * Generate a consistent key for pending grace confirmations.
+     */
+    private String getConfirmationKey(CommandSender sender) {
+        return sender.getClass().getName() + ":" + sender.getName();
+    }
+
+    /**
+     * Remove pending confirmations older than 5 minutes to prevent memory leaks.
+     */
+    private void cleanupStalePendingConfirmations() {
+        long now = System.currentTimeMillis();
+        long fiveMinutes = 5 * 60 * 1000L;
+        pendingGraceConfirmations.entrySet().removeIf(entry -> 
+            (now - entry.getValue().createdAt()) > fiveMinutes
+        );
     }
 
     @Override
@@ -208,9 +229,9 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         // Issue #21: Check if grace is already active and prompt for confirmation
         if (data.getGraceUntil() > now) {
             String remaining = data.getGraceTimeRemaining(plugin.getGracePeriodMillis());
-            String confirmationKey = sender.getClass().getName() + ":" + sender.getName();
+            String confirmationKey = getConfirmationKey(sender);
             pendingGraceConfirmations.put(confirmationKey,
-                    new PendingGrace(data.getUuid(), data.getUsername(), millis, data.getGraceUntil()));
+                    new PendingGrace(data.getUuid(), data.getUsername(), millis, data.getGraceUntil(), now));
 
             sender.sendMessage(MessageUtil.colorize(
                     "&e" + data.getUsername() + " &7already has an active grace period (&e" + remaining + " &7remaining)."));
@@ -266,7 +287,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        PendingGrace pending = pendingGraceConfirmations.remove(sender.getName());
+        PendingGrace pending = pendingGraceConfirmations.remove(getConfirmationKey(sender));
         if (pending == null) {
             sender.sendMessage(MessageUtil.colorize(
                     "&cNo pending grace confirmation found. Use /psadmin grace set first."));
@@ -310,7 +331,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                     "&7Grace period operation cancelled."));
             default -> {
                 // Invalid choice, re-add the pending confirmation
-                pendingGraceConfirmations.put(sender.getName(), pending);
+                pendingGraceConfirmations.put(getConfirmationKey(sender), pending);
                 sender.sendMessage(MessageUtil.colorize(
                         "&cInvalid option. Use: /psadmin confirm <overwrite|stack|cancel>"));
             }
