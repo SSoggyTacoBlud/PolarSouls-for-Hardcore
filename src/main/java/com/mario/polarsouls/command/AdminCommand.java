@@ -54,7 +54,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     private final PolarSouls plugin;
     private final DatabaseManager databaseManager;
 
-    // Tracks pending grace confirmation per admin sender name
+    // Tracks pending grace confirmations per sender confirmation key (class + name via getConfirmationKey)
     private final Map<String, PendingGrace> pendingGraceConfirmations = new ConcurrentHashMap<>();
 
     /**
