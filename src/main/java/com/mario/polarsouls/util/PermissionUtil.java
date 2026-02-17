@@ -1,7 +1,6 @@
 package com.mario.polarsouls.util;
 
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -78,6 +77,6 @@ public final class PermissionUtil {
      */
     public static void sendSecurityBlockMessage(CommandSender sender) {
         sender.sendMessage(MessageUtil.colorize("&cSecurity Error: On the Limbo server, OP status cannot be used to execute this command."));
-        sender.sendMessage(MessageUtil.colorize("&7Either /deop yourself on Limbo or ask an administrator to add you to the whitelist."));
+        sender.sendMessage(MessageUtil.colorize("&7Either /deop yourself on Limbo, ask an administrator to add you to the whitelist, or have them grant you the bypass permission &e(polarsouls.bypass-limbo-op-security)&7."));
     }
 }
