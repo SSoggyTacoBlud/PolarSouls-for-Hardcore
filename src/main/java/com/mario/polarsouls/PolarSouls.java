@@ -90,6 +90,7 @@ public final class PolarSouls extends JavaPlugin implements Listener {
     private boolean hrmReviveSkullRecipe;
     private boolean hardcoreHearts;
     private boolean limboOpSecurityEnabled;
+    private Set<String> limboTrustedAdmins;
     private final Map<String, Boolean> originalWorldHardcore = new HashMap<>();
     private ReviveSkullManager reviveSkullManager;
     private ExtraLifeManager extraLifeManager;
@@ -299,6 +300,8 @@ public final class PolarSouls extends JavaPlugin implements Listener {
         extraLifeEnabled    = cfg.getBoolean("extra-life.enabled", true);
         hardcoreHearts      = cfg.getBoolean("hardcore-hearts", true);
         limboOpSecurityEnabled = cfg.getBoolean("limbo-op-security-check", true);
+        limboTrustedAdmins  = ConcurrentHashMap.newKeySet();
+        limboTrustedAdmins.addAll(cfg.getStringList("limbo-trusted-admins"));
 
         for (World world : getServer().getWorlds()) {
             boolean original = originalWorldHardcore.getOrDefault(world.getName(), false);
@@ -519,6 +522,10 @@ public final class PolarSouls extends JavaPlugin implements Listener {
 
     public boolean isLimboOpSecurityEnabled() {
         return limboOpSecurityEnabled;
+    }
+
+    public Set<String> getLimboTrustedAdmins() {
+        return limboTrustedAdmins;
     }
 
     // checks if main and limbo are running same version, warns if not

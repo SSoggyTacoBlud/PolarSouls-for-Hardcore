@@ -93,15 +93,28 @@ When enabled (recommended), this security check will:
 
 #### Granting Proper Permissions
 
-To allow a user to execute admin commands on the Limbo server, you have two options:
+To allow a user to execute admin commands on the Limbo server, you have three options:
 
-**Option 1: Grant bypass permission (recommended for admins)**
+**Option 1: Use the Whitelist (Easiest - No permissions plugin required)**
+```yaml
+# In config.yml
+limbo-trusted-admins:
+  - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # UUID format (recommended)
+  - "SSoggyTacoBlud"                          # Username format also works
+```
+
+- UUIDs are recommended (won't break if player changes name)
+- Usernames are easier to manage
+- No permissions plugin required
+- Just edit config.yml and `/psadmin reload`
+
+**Option 2: Grant bypass permission (requires LuckPerms or similar)**
 ```
 # Allows OP users to execute commands on Limbo server
 /lp user <player> permission set polarsouls.bypass-limbo-op-security true
 ```
 
-**Option 2: Grant explicit permissions without OP**
+**Option 3: Grant explicit permissions without OP**
 ```
 # Remove OP status first, then grant explicit permissions
 /deop <player>
@@ -113,7 +126,7 @@ To allow a user to execute admin commands on the Limbo server, you have two opti
 /lp user <player> permission set polarsouls.admin true
 ```
 
-> **Important:** If a user has OP status on the Limbo server, they MUST have the `polarsouls.bypass-limbo-op-security` permission to execute admin commands. This prevents the security vulnerability while still allowing proper administration.
+> **Tip:** Use Option 1 (whitelist) if you don't have a permissions plugin installed. It's the simplest and works out-of-the-box.
 
 #### Disabling the Security Check
 

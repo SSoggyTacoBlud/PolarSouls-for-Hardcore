@@ -224,7 +224,21 @@ Grace period only counts while player is online:
 
 **This is normal security behavior!** By default, OP users are blocked from using admin commands on the Limbo server to prevent abuse.
 
-#### - Grant Bypass Permission (Recommended)
+#### - Use Whitelist (Easiest - No permissions plugin required)
+
+Edit `config.yml`:
+```yaml
+limbo-trusted-admins:
+  - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # UUID (recommended)
+  - "PlayerName"                              # or username
+```
+
+Then reload:
+```
+/psadmin reload
+```
+
+#### - Grant Bypass Permission (Requires LuckPerms)
 
 Use a permissions plugin like LuckPerms:
 ```

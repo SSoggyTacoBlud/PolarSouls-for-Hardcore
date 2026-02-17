@@ -91,6 +91,21 @@ limbo-server-name: "limbo"
 # Recommended: true (for security)
 limbo-op-security-check: true
 
+# Whitelist of trusted admins allowed to use admin commands on Limbo server
+# This provides an alternative to the bypass permission for servers without LuckPerms
+# 
+# You can use UUIDs (recommended) or usernames:
+#   - UUIDs are more secure (won't break if player changes name)
+#   - Usernames are easier to manage but less secure
+# 
+# Example:
+#   limbo-trusted-admins:
+#     - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # UUID format (recommended)
+#     - "SSoggyTacoBlud"                          # Username format
+# 
+# Leave empty [] to rely only on the permission-based system
+limbo-trusted-admins: []
+
 # ───────────────────────────────────────────────────────────────────────────────
 # MySQL Database Configuration
 # ───────────────────────────────────────────────────────────────────────────────

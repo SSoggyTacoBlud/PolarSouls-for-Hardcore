@@ -527,16 +527,26 @@ Variables you can use:
 
 **How it works:**
 - **Main server:** Admin commands work normally (OP or explicit permissions)
-- **Limbo server:** OP users are blocked unless they have `polarsouls.bypass-limbo-op-security`
+- **Limbo server:** OP users are blocked unless they're whitelisted or have bypass permission
 - **Console:** Always works on both servers
 
-**To allow an OP to use admin commands on Limbo:**
+**To allow an OP to use admin commands on Limbo (choose one):**
+
+**Option 1: Whitelist (Easiest - no permissions plugin needed)**
+```yaml
+# In config.yml
+limbo-trusted-admins:
+  - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # Your UUID (recommended)
+  - "YourUsername"                           # Or username
+```
+Then run `/psadmin reload` to apply changes.
+
+**Option 2: Using LuckPerms**
 ```bash
-# Using LuckPerms (or similar permissions plugin)
 /lp user <player> permission set polarsouls.bypass-limbo-op-security true
 ```
 
-**Or remove OP and grant explicit permissions:**
+**Option 3: Remove OP and use explicit permissions**
 ```bash
 /deop <player>
 /lp user <player> permission set polarsouls.admin true

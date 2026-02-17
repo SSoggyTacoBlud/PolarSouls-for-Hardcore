@@ -1,5 +1,8 @@
 package com.mario.polarsouls.util;
 
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -46,12 +49,24 @@ public final class PermissionUtil {
             return false;
         }
 
+        // Check if player is in the trusted admins whitelist (by UUID or username)
+        Set<String> trustedAdmins = plugin.getLimboTrustedAdmins();
+        if (!trustedAdmins.isEmpty()) {
+            String playerUuid = player.getUniqueId().toString();
+            String playerName = player.getName();
+            
+            // Check both UUID and username
+            if (trustedAdmins.contains(playerUuid) || trustedAdmins.contains(playerName)) {
+                return false;
+            }
+        }
+
         // Player is OP on Limbo server - check if they have bypass permission
         if (player.hasPermission("polarsouls.bypass-limbo-op-security")) {
             return false;
         }
 
-        // Player is OP without bypass permission - block them
+        // Player is OP without bypass permission or whitelist entry - block them
         // This prevents the security vulnerability where Limbo-only OPs can abuse admin commands
         return true;
     }
@@ -63,6 +78,6 @@ public final class PermissionUtil {
      */
     public static void sendSecurityBlockMessage(CommandSender sender) {
         sender.sendMessage(MessageUtil.colorize("&cSecurity Error: On the Limbo server, OP status cannot be used to execute this command."));
-        sender.sendMessage(MessageUtil.colorize("&7Either /deop yourself on Limbo or ask an administrator for the 'polarsouls.bypass-limbo-op-security' permission."));
+        sender.sendMessage(MessageUtil.colorize("&7Either /deop yourself on Limbo or ask an administrator to add you to the whitelist."));
     }
 }
