@@ -233,10 +233,12 @@ limbo-trusted-admins:
   - "PlayerName"                              # or username
 ```
 
-Then reload:
+Then reload from **console** (or from an already whitelisted/bypass-enabled admin):
 ```
 /psadmin reload
 ```
+
+Or simply restart the server to apply the changes.
 
 #### - Grant Bypass Permission (Requires LuckPerms)
 

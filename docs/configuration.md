@@ -106,7 +106,7 @@ limbo-trusted-admins:
 - UUIDs are recommended (won't break if player changes name)
 - Usernames are easier to manage
 - No permissions plugin required
-- Just edit config.yml and `/psadmin reload`
+- After editing config.yml, apply changes by running `/psadmin reload` from the server console or from an already bypassed/whitelisted account, or by restarting the server
 
 **Option 2: Grant bypass permission (requires LuckPerms or similar)**
 ```

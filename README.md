@@ -539,7 +539,7 @@ limbo-trusted-admins:
   - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # Your UUID (recommended)
   - "YourUsername"                           # Or username
 ```
-Then run `/psadmin reload` to apply changes.
+Then run `/psadmin reload` from the **console** or an already whitelisted/bypass-enabled admin, or restart the server, to apply changes.
 
 **Option 2: Using LuckPerms**
 ```bash
