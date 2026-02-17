@@ -225,8 +225,8 @@ public class MainServerListener implements Listener {
 
         UUID uuid = player.getUniqueId();
         long now = System.currentTimeMillis();
-        // Use synchronous save to ensure data integrity on server crash
-        // PlayerQuitEvent is already async-safe and won't block the main thread significantly
+        // Use synchronous save to ensure data integrity on server crash.
+        // This is called on the main thread, but the operation is fast and won't cause noticeable lag.
         db.setLastSeen(uuid, now);
     }
 
@@ -445,8 +445,7 @@ public class MainServerListener implements Listener {
     private void grantReviveCooldown(UUID uuid) {
         int seconds = plugin.getReviveCooldownSeconds();
         if (seconds > 0) {
-            long cooldownMillis = (long) seconds * 1000L;
-            reviveCooldowns.put(uuid, System.currentTimeMillis() + cooldownMillis);
+            reviveCooldowns.put(uuid, System.currentTimeMillis() + (seconds * 1000L));
             plugin.debug("Granted " + seconds + "s revive cooldown to " + uuid);
         }
     }
