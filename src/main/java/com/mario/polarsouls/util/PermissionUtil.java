@@ -23,10 +23,9 @@ public final class PermissionUtil {
      * 
      * @param sender The command sender to check
      * @param plugin The plugin instance
-     * @param permission The permission node being checked
      * @return true if the sender should be blocked, false if allowed
      */
-    public static boolean isBlockedByLimboOpSecurity(CommandSender sender, PolarSouls plugin, String permission) {
+    public static boolean isBlockedByLimboOpSecurity(CommandSender sender, PolarSouls plugin) {
         // If security check is disabled, allow all
         if (!plugin.isLimboOpSecurityEnabled()) {
             return false;

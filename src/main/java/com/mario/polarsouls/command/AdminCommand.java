@@ -97,7 +97,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         // Security check: Prevent Limbo-only OP from using this command
-        if (com.mario.polarsouls.util.PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin, "polarsouls.admin")) {
+        if (com.mario.polarsouls.util.PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin)) {
             com.mario.polarsouls.util.PermissionUtil.sendSecurityBlockMessage(sender);
             return true;
         }
@@ -207,7 +207,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             long now = System.currentTimeMillis();
             // Direct timestamp check is more appropriate here than isInGracePeriod()
             // because we specifically want to check if grace_until is set, not the legacy fallback
-            if (playerData.getGraceUntil() <= now) {
+            if (playerData.getGraceUntil() <= 0 || playerData.getGraceUntil() <= now) {
                 sender.sendMessage(MessageUtil.colorize(
                         "&e" + playerData.getUsername() + " &7does not have an active grace period."));
                 return;
