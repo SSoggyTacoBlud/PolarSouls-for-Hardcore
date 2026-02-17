@@ -17,6 +17,7 @@ import com.mario.polarsouls.database.DatabaseManager;
 import com.mario.polarsouls.model.PlayerData;
 import com.mario.polarsouls.util.CommandUtil;
 import com.mario.polarsouls.util.MessageUtil;
+import com.mario.polarsouls.util.PermissionUtil;
 import com.mario.polarsouls.util.TabCompleteUtil;
 
 public class SetLivesCommand implements CommandExecutor, TabCompleter {
@@ -36,8 +37,8 @@ public class SetLivesCommand implements CommandExecutor, TabCompleter {
         }
 
         // Security check: Prevent Limbo-only OP from using this command
-        if (com.mario.polarsouls.util.PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin)) {
-            com.mario.polarsouls.util.PermissionUtil.sendSecurityBlockMessage(sender);
+        if (PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin)) {
+            PermissionUtil.sendSecurityBlockMessage(sender);
             return true;
         }
 
