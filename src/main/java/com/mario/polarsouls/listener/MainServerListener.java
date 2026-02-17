@@ -231,7 +231,9 @@ public class MainServerListener implements Listener {
     private void handleDeathAsync(Player player, UUID uuid) {
         PlayerData data = db.getPlayer(uuid);
         if (data == null) {
-            data = PlayerData.createNew(uuid, player.getName(), plugin.getDefaultLives());
+            // Use grace period overload to ensure proper grace tracking for new players
+            data = PlayerData.createNew(uuid, player.getName(), plugin.getDefaultLives(), 
+                                       plugin.getGracePeriodMillis());
         }
 
         if (data.isInGracePeriod(plugin.getGracePeriodMillis())) {

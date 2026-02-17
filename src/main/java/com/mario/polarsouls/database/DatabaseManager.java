@@ -211,31 +211,36 @@ public class DatabaseManager {
                 + "last_seen = VALUES(last_seen), "
                 + "grace_until = VALUES(grace_until)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, data.getUuid().toString());
-            ps.setString(2, data.getUsername());
-            ps.setInt(3, data.getLives());
-            ps.setBoolean(4, data.isDead());
-            ps.setLong(5, data.getFirstJoin());
-            ps.setLong(6, data.getLastDeath());
-            ps.setLong(7, data.getLastSeen());
-            ps.setLong(8, data.getGraceUntil());
-
-            ps.executeUpdate();
-            
-            // Invalidate cache whenever death status might change
-            // This is critical to prevent stale cache when players die or are revived
+        try {
+            // Invalidate cache before save to ensure consistency even if save fails
+            // This prevents stale cached data from being used if the DB operation fails
             deathStatusCache.remove(data.getUuid());
             
-            // Avoid string concatenation overhead unless debug is enabled
-            if (plugin.isDebugMode()) {
-                plugin.debug("Saved player data: " + data);
-            }
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, () -> "Failed to save player " + data.getUuid());
+                ps.setString(1, data.getUuid().toString());
+                ps.setString(2, data.getUsername());
+                ps.setInt(3, data.getLives());
+                ps.setBoolean(4, data.isDead());
+                ps.setLong(5, data.getFirstJoin());
+                ps.setLong(6, data.getLastDeath());
+                ps.setLong(7, data.getLastSeen());
+                ps.setLong(8, data.getGraceUntil());
+
+                ps.executeUpdate();
+                
+                // Avoid string concatenation overhead unless debug is enabled
+                if (plugin.isDebugMode()) {
+                    plugin.debug("Saved player data: " + data);
+                }
+
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.WARNING, () -> "Failed to save player " + data.getUuid());
+            }
+        } finally {
+            // Ensure cache is invalidated even if an exception occurs
+            deathStatusCache.remove(data.getUuid());
         }
     }
 
