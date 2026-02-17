@@ -66,18 +66,24 @@ limbo-server-name: "limbo"
 # ───────────────────────────────────────────────────────────────────────────────
 # Security Settings
 # ───────────────────────────────────────────────────────────────────────────────
-# Prevent users with OP status ONLY on Limbo server from executing admin commands
+# Restrict use of admin and revive commands by operators (OPs) on the Limbo server
 # 
-# SECURITY ISSUE: If you give someone OP only on the Limbo server, they could
-# still execute /revive and /psadmin commands to revive players and modify lives.
+# SECURITY ISSUE: If someone has OP on the Limbo server, they could normally
+# execute /revive and /psadmin commands to revive players and modify lives.
 # 
 # When enabled, this security check will block admin/revive commands on the Limbo 
-# server if the user only has OP permissions (not explicit permission nodes).
+# server for ANY OP unless they have the explicit bypass permission node.
+# This applies even if the OP also has polarsouls.revive or polarsouls.admin.
 # 
-# To bypass this security check, grant users explicit permissions:
-#   - polarsouls.revive (for /revive command)
-#   - polarsouls.admin (for /psadmin commands)
-#   - polarsouls.bypass-limbo-op-security (bypass this security check entirely)
+# To allow commands for staff, you must either:
+#   - De-op them on the Limbo server and grant normal permission nodes, OR
+#   - Keep them OP and ALSO grant the bypass permission below.
+# 
+# Required permissions:
+#   - polarsouls.revive (required to use the /revive command)
+#   - polarsouls.admin (required to use /psadmin commands)
+#   - polarsouls.bypass-limbo-op-security (required for any OP on Limbo to run
+#       /revive or /psadmin; without this, their admin/revive commands are blocked)
 # 
 # [CONFIG] LIMBO SERVER: Set to true to enable the security check
 # [CONFIG] MAIN SERVER: This setting is ignored on Main server
