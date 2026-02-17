@@ -423,7 +423,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                         target.sendMessage(MessageUtil.get("death-sent-to-limbo"));
                         ServerTransferUtil.sendToLimbo(target);
                     }
-                }, plugin.getHybridTimeoutSeconds() * 20L);
+                }, (long) plugin.getHybridTimeoutSeconds() * 20L);
             }
             default -> {
                 target.sendMessage(MessageUtil.get("death-sent-to-limbo"));
