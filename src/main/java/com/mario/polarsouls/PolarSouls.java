@@ -442,6 +442,10 @@ public final class PolarSouls extends JavaPlugin implements Listener {
         return databaseManager;
     }
 
+    public MainServerListener getMainServerListener() {
+        return mainServerListener;
+    }
+
     public boolean isLimboServer() {
         return isLimboServer;
     }
