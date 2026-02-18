@@ -18,6 +18,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -444,12 +445,20 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 String timeoutStr = formatTime(timeout);
                 target.sendMessage(MessageUtil.get("death-hybrid-warning",
                         "timeout", timeoutStr));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
+                // Schedule the hybrid timeout and register it for proper cancellation
+                UUID targetUuid = target.getUniqueId();
+                BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    // Remove from tracking when task executes
+                    plugin.getMainServerListener().cancelHybridTransfer(targetUuid);
                     if (target.isOnline()) {
                         target.sendMessage(MessageUtil.get("death-sent-to-limbo"));
                         ServerTransferUtil.sendToLimbo(target);
                     }
                 }, plugin.getHybridTimeoutSeconds() * 20L);
+
+                // Register task with MainServerListener so it can be cancelled if player is revived
+                plugin.getMainServerListener().registerHybridTransfer(targetUuid, task);
             }
             default -> {
                 target.sendMessage(MessageUtil.get("death-sent-to-limbo"));

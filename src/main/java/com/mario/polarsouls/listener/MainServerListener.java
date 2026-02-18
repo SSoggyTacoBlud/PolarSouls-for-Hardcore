@@ -224,6 +224,10 @@ public class MainServerListener implements Listener {
         if (player.hasPermission(PERM_BYPASS)) return;
 
         UUID uuid = player.getUniqueId();
+
+        // Cancel any pending hybrid transfer since player is offline
+        cancelHybridTransfer(uuid);
+
         long now = System.currentTimeMillis();
         // Run async to avoid blocking the main thread with DB writes
         // Trade-off: may lose very recent quit timestamps on crash, but prevents lag
@@ -454,11 +458,33 @@ public class MainServerListener implements Listener {
         }
     }
 
-    private void cancelHybridTransfer(UUID uuid) {
+    /**
+     * Cancel any pending hybrid transfer task for the given player.
+     * This should be called when a player is revived or their death state changes
+     * to prevent them from being unexpectedly sent to Limbo.
+     *
+     * @param uuid The UUID of the player whose hybrid transfer should be cancelled
+     */
+    public void cancelHybridTransfer(UUID uuid) {
         BukkitTask task = hybridPendingTransfers.remove(uuid);
         if (task != null) {
             task.cancel();
             plugin.debug("Cancelled pending hybrid transfer for " + uuid);
         }
+    }
+
+    /**
+     * Register a hybrid transfer task for the given player.
+     * This allows the task to be properly tracked and cancelled if the player
+     * is revived or their death state changes before the timeout expires.
+     *
+     * @param uuid The UUID of the player
+     * @param task The scheduled task that will send the player to Limbo
+     */
+    public void registerHybridTransfer(UUID uuid, BukkitTask task) {
+        // Cancel any existing task first
+        cancelHybridTransfer(uuid);
+        hybridPendingTransfers.put(uuid, task);
+        plugin.debug("Registered pending hybrid transfer for " + uuid);
     }
 }
