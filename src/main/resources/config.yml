@@ -64,6 +64,49 @@ main-server-name: "main"
 limbo-server-name: "limbo"
 
 # ───────────────────────────────────────────────────────────────────────────────
+# Security Settings
+# ───────────────────────────────────────────────────────────────────────────────
+# Limbo OP Security Check - Prevents abuse of admin commands on Limbo server
+# 
+# SECURITY ISSUE: If someone has OP on the Limbo server, they could normally
+# execute /revive and /psadmin commands to revive players and modify lives.
+# 
+# When enabled, this security check will block admin/revive commands on the Limbo 
+# server for ANY OP unless they are whitelisted or have bypass permission.
+# 
+# Three ways to allow an OP to use admin commands on Limbo:
+#   1. Add them to limbo-trusted-admins list below (easiest - no permissions plugin needed)
+#   2. Grant them the polarsouls.bypass-limbo-op-security permission (requires LuckPerms)
+#   3. De-op them and grant polarsouls.revive or polarsouls.admin permissions
+# 
+# [CONFIG] LIMBO SERVER: Set to true to enable the security check (recommended)
+# [CONFIG] MAIN SERVER: This setting is ignored on Main server
+# 
+limbo-op-security-check: true
+
+# Whitelist of trusted admins allowed to use admin commands on Limbo server
+# This is the EASIEST way to allow OPs - no permissions plugin required!
+# 
+# Supports both UUIDs (recommended) and usernames:
+#   - UUIDs: Won't break if player changes name, more secure
+#   - Usernames: Easier to remember and type
+# 
+# Example:
+#   limbo-trusted-admins:
+#     - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # UUID format (recommended)
+#     - "SSoggyTacoBlud"                          # Username format
+# 
+# To apply changes:
+#   - Edit this list and save the file
+#   - Then either:
+#       • Run /psadmin reload from the server console, or
+#       • Run /psadmin reload from an already whitelisted/bypass-permission admin, or
+#       • Restart the server to load the new whitelist
+# NOTE: Newly added OPs on Limbo cannot run /psadmin until after the whitelist reloads.
+# Leave empty [] to rely only on the permission-based system
+limbo-trusted-admins: []
+
+# ───────────────────────────────────────────────────────────────────────────────
 # MySQL Database Configuration
 # ───────────────────────────────────────────────────────────────────────────────
 # [CONFIG] BOTH SERVERS: Database details MUST be identical on Main and Limbo!

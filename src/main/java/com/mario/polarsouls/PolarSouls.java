@@ -1,5 +1,6 @@
 package com.mario.polarsouls;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -89,6 +90,8 @@ public final class PolarSouls extends JavaPlugin implements Listener {
     private boolean hrmHeadEffects;
     private boolean hrmReviveSkullRecipe;
     private boolean hardcoreHearts;
+    private boolean limboOpSecurityEnabled;
+    private Set<String> limboTrustedAdmins;
     private final Map<String, Boolean> originalWorldHardcore = new HashMap<>();
     private ReviveSkullManager reviveSkullManager;
     private ExtraLifeManager extraLifeManager;
@@ -297,6 +300,18 @@ public final class PolarSouls extends JavaPlugin implements Listener {
         reviveCooldownSeconds = cfg.getInt("lives.revive-cooldown-seconds", 30);
         extraLifeEnabled    = cfg.getBoolean("extra-life.enabled", true);
         hardcoreHearts      = cfg.getBoolean("hardcore-hearts", true);
+        limboOpSecurityEnabled = cfg.getBoolean("limbo-op-security-check", true);
+        limboTrustedAdmins  = ConcurrentHashMap.newKeySet();
+        // Normalize whitelist entries: trim whitespace and lowercase non-UUID entries (usernames)
+        for (String entry : cfg.getStringList("limbo-trusted-admins")) {
+            String trimmed = entry.trim();
+            // Keep UUIDs in original case (they contain dashes), lowercase usernames for case-insensitive matching
+            if (trimmed.contains("-")) {
+                limboTrustedAdmins.add(trimmed); // UUID format, keep as-is
+            } else {
+                limboTrustedAdmins.add(trimmed.toLowerCase()); // Username, normalize to lowercase
+            }
+        }
 
         for (World world : getServer().getWorlds()) {
             boolean original = originalWorldHardcore.getOrDefault(world.getName(), false);
@@ -513,6 +528,14 @@ public final class PolarSouls extends JavaPlugin implements Listener {
 
     public boolean isHrmReviveSkullRecipe() {
         return hrmEnabled && hrmReviveSkullRecipe;
+    }
+
+    public boolean isLimboOpSecurityEnabled() {
+        return limboOpSecurityEnabled;
+    }
+
+    public Set<String> getLimboTrustedAdmins() {
+        return Collections.unmodifiableSet(limboTrustedAdmins);
     }
 
     // checks if main and limbo are running same version, warns if not

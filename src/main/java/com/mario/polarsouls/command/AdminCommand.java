@@ -30,6 +30,7 @@ import com.mario.polarsouls.hrm.HeadDropListener;
 import com.mario.polarsouls.model.PlayerData;
 import com.mario.polarsouls.util.CommandUtil;
 import com.mario.polarsouls.util.MessageUtil;
+import com.mario.polarsouls.util.PermissionUtil;
 import com.mario.polarsouls.util.PlayerRevivalUtil;
 import com.mario.polarsouls.util.ServerTransferUtil;
 import com.mario.polarsouls.util.TabCompleteUtil;
@@ -102,6 +103,12 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!CommandUtil.checkPermission(sender, "polarsouls.admin")) {
+            return true;
+        }
+
+        // Security check: Prevent Limbo-only OP from using this command
+        if (PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin)) {
+            PermissionUtil.sendSecurityBlockMessage(sender);
             return true;
         }
 
@@ -207,7 +214,12 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         if ("remove".equals(action)) {
-            if (!playerData.isInGracePeriod(plugin.getGracePeriodMillis())) {
+            long now = System.currentTimeMillis();
+            // IMPORTANT: We use direct timestamp check instead of isInGracePeriod() here.
+            // Reason: isInGracePeriod() has legacy fallback logic (firstJoin + global config).
+            // For the "grace remove" command, we only want to remove explicit grace periods
+            // (grace_until > 0), not affect legacy grace calculations.
+            if (playerData.getGraceUntil() <= 0 || playerData.getGraceUntil() <= now) {
                 sender.sendMessage(MessageUtil.colorize(
                         "&e" + playerData.getUsername() + " &7does not have an active grace period."));
                 return;

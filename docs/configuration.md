@@ -11,14 +11,15 @@ Complete guide to configuring PolarSouls to match your server's needs.
 
 1. [Overview](#overview)
 2. [Server Role](#server-role)
-3. [Database Configuration](#database-configuration)
-4. [Lives System](#lives-system)
-5. [Death Modes](#death-modes)
-6. [Limbo Settings](#limbo-settings)
-7. [HRM Features](#hrm-features)
-8. [Extra Life Item](#extra-life-item)
-9. [Messages & Colors](#messages--colors)
-10. [Advanced Options](#advanced-options)
+3. [Security Settings](#security-settings)
+4. [Database Configuration](#database-configuration)
+5. [Lives System](#lives-system)
+6. [Death Modes](#death-modes)
+7. [Limbo Settings](#limbo-settings)
+8. [HRM Features](#hrm-features)
+9. [Extra Life Item](#extra-life-item)
+10. [Messages & Colors](#messages--colors)
+11. [Advanced Options](#advanced-options)
 
 ## Overview
 
@@ -59,6 +60,86 @@ limbo-server-name: "limbo"   # Name of Limbo server in proxy config
 ```
 
 > **Tip:** The server names must exactly match the server names in your `velocity.toml` file.
+
+---
+
+## Security Settings
+
+### Limbo OP Security Check
+
+```yaml
+limbo-op-security-check: true  # Prevent Limbo-only OPs from using admin commands
+```
+
+**Important Security Feature:** This setting prevents a critical security vulnerability where users with OP status **only on the Limbo server** could execute privileged commands like `/revive` and `/psadmin`.
+
+#### Why This Matters
+
+If you give someone OP on the Limbo server (for example, to manage the Limbo world), they could potentially:
+- Revive any dead player using `/revive <player>`
+- Modify player lives with `/psadmin lives`
+- Force-kill players with `/psadmin kill`
+- Grant grace periods with `/psadmin grace`
+- Reset player data with `/psadmin reset`
+
+#### How It Works
+
+When enabled (recommended), this security check will:
+1. **Block** all OP users on the Limbo server from executing admin/revive commands
+2. **Allow** OP users with the bypass permission `polarsouls.bypass-limbo-op-security`
+3. **Allow** non-OP users with explicit permission nodes
+4. **Allow** commands on the Main server regardless of how permissions are granted
+5. **Allow** console to always execute commands
+
+#### Granting Proper Permissions
+
+To allow a user to execute admin commands on the Limbo server, you have three options:
+
+**Option 1: Use the Whitelist (Easiest - No permissions plugin required)**
+```yaml
+# In config.yml
+limbo-trusted-admins:
+  - "069a79f4-44e9-4726-a5be-fca90e38aaf5"  # UUID format (recommended)
+  - "SSoggyTacoBlud"                          # Username format also works
+```
+
+- UUIDs are recommended (won't break if player changes name)
+- Usernames are easier to manage
+- No permissions plugin required
+- After editing config.yml, apply changes by running `/psadmin reload` from the server console or from an already bypassed/whitelisted account, or by restarting the server
+
+**Option 2: Grant bypass permission (requires LuckPerms or similar)**
+```
+# Allows OP users to execute commands on Limbo server
+/lp user <player> permission set polarsouls.bypass-limbo-op-security true
+```
+
+**Option 3: Grant explicit permissions without OP**
+```
+# Remove OP status first, then grant explicit permissions
+/deop <player>
+
+# For revival commands:
+/lp user <player> permission set polarsouls.revive true
+
+# For all admin commands:
+/lp user <player> permission set polarsouls.admin true
+```
+
+> **Tip:** Use Option 1 (whitelist) if you don't have a permissions plugin installed. It's the simplest and works out-of-the-box.
+
+#### Disabling the Security Check
+
+```yaml
+limbo-op-security-check: false  # NOT RECOMMENDED
+```
+
+Set to `false` only if:
+- You trust all OPs on your Limbo server completely
+- You have other security measures in place
+- You're testing the plugin in a development environment
+
+> **Security Recommendation:** Keep this enabled (`true`) in production environments.
 
 ---
 

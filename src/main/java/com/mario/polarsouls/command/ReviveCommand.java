@@ -19,6 +19,7 @@ import com.mario.polarsouls.hrm.HeadDropListener;
 import com.mario.polarsouls.model.PlayerData;
 import com.mario.polarsouls.util.CommandUtil;
 import com.mario.polarsouls.util.MessageUtil;
+import com.mario.polarsouls.util.PermissionUtil;
 import com.mario.polarsouls.util.PlayerRevivalUtil;
 import com.mario.polarsouls.util.ServerTransferUtil;
 import com.mario.polarsouls.util.TabCompleteUtil;
@@ -38,6 +39,12 @@ public class ReviveCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!CommandUtil.checkPermission(sender, "polarsouls.revive", "&cYou don't have permission to revive players.")) {
+            return true;
+        }
+
+        // Security check: Prevent Limbo-only OP from using this command
+        if (PermissionUtil.isBlockedByLimboOpSecurity(sender, plugin)) {
+            PermissionUtil.sendSecurityBlockMessage(sender);
             return true;
         }
 
