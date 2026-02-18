@@ -371,7 +371,8 @@ CREATE DATABASE IF NOT EXISTS polarsouls;
 #### - Check User Permissions
 
 ```sql
-GRANT ALL PRIVILEGES ON polarsouls.* TO 'polarsouls_user'@'%';
+-- Restrict to the host your backend uses (e.g. 127.0.0.1 or your server IP)
+GRANT SELECT, INSERT, UPDATE, DELETE ON polarsouls.* TO 'polarsouls_user'@'127.0.0.1';
 FLUSH PRIVILEGES;
 ```
 
