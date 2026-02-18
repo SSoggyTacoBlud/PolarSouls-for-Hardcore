@@ -43,7 +43,8 @@ public final class PermissionUtil {
             return false;
         }
 
-        // If player is not OP, they can execute commands (they have explicit permissions)
+        // Limbo OP security only targets OP players; for non-OP players, this check does not apply
+        // and normal permission checks elsewhere will determine whether they can execute the command.
         if (!player.isOp()) {
             return false;
         }
