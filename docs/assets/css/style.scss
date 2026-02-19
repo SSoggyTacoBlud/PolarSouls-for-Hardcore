@@ -709,7 +709,7 @@ body.dark-mode .callout-success {
 
 [data-theme="dark"] .main-content table tbody tr:hover,
 body.dark-mode .main-content table tbody tr:hover {
-  background-color: #252b3d;
+  background-color: var(--sidebar-hover);
 }
 
 [data-theme="dark"] .main-content,
